@@ -20,7 +20,7 @@ namespace MyFirstMonoGame
         EnemyState currState;
         float angle = 0;//in RADIANS
         const float maxRotation = (float)Math.PI / 9.0f;//this equates to 15 degrees
-        const int patrollingRadius = 400;
+        const int patrollingRadius = 550;
 
         public Enemy(Vector2 anchor)
         {
