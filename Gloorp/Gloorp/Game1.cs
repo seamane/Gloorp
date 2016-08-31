@@ -183,7 +183,7 @@ namespace MyFirstMonoGame
             replay.texture = Content.Load<Texture2D>("Images/BannerArt/replay");
             replay.position = new Vector2(200, 100);
             victory.texture = Content.Load<Texture2D>("Images/BannerArt/VictorySprite");
-            victory.position = new Vector2(350, 50);
+            victory.position = new Vector2(220, 10);
         }
 
         private void LoadObjects()
@@ -591,7 +591,7 @@ namespace MyFirstMonoGame
             }
             if(currState == GameState.Finished)
             {
-                spriteBatch.Draw(victory.texture, victory.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.2f, SpriteEffects.None, 0.0f);
+                spriteBatch.Draw(victory.texture, victory.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0.0f);
             }
 
             spriteBatch.End();
