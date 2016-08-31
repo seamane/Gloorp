@@ -1,0 +1,661 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+namespace MyFirstMonoGame
+{
+    /// <summary>
+    /// This is the main type for your game.
+    /// </summary>
+    public class Game1 : Game
+    {
+        private enum GameState
+        {
+            Playing,
+            Finished,
+            Dead
+        }
+
+        GameState currState = GameState.Playing;
+
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+        KeyboardState prevKeyboardState;
+
+        private Player player;
+        Sprite frontBackgroundSprite;//tracks which background sprite is furthest left
+
+        //Background tiles
+        Sprite mBackgroundOne = new Sprite();
+        Sprite mBackgroundTwo = new Sprite();
+        Sprite mBackgroundThree = new Sprite();
+        Sprite mBackgroundFour = new Sprite();
+        Sprite mBackgroundFive = new Sprite();
+
+        //player UI for start of game
+        Sprite keyA = new Sprite();
+        Sprite keyD = new Sprite();
+        Sprite leftArrow = new Sprite();
+        Sprite rightArrow = new Sprite();
+
+        //finish line
+        Sprite finishLine = new Sprite();
+
+        //Banner sprites
+        //Sprite tryAgain = new Sprite();
+        Sprite victory = new Sprite();
+        Sprite replay = new Sprite();
+        
+        float playerInitialPosition;
+        
+        Animation playerAnim;//holds the current animation for the player
+        Animation walkLeftAnim,walkRightAnim,jumpingAnim,fallingAnim,idleAnimation,fallLeftAnim,jumpLeftAnim,pineAppleAnim;
+
+        Animation testObject;
+
+        Rectangle source;
+
+        // the elapsed amount of time the frame has been shown for
+        float time;
+        // duration of time to show each frame
+        float frameTime = 0.25f;
+        // an index of the current frame being shown
+        int frameIndex;
+        // total number of frames in our spritesheet
+        const int totalFrames = 4;
+        // define the size of our animation frame
+        int frameHeight = 64;
+        int frameWidth = 64;
+
+        ObjectManager objectManager = new ObjectManager();
+        EnemyManager enemyManager;
+
+        // contains all the directions
+        DirectionSpriteManager directionManager = new DirectionSpriteManager();
+        // constant circle where the direction sprites come in contact with
+        //Sprite constantCircle = new Sprite();
+        // The invisible frame size surrounding the constant circle object. Change the numbers according to the size of the object.
+        //Point constantCircleFrameSize = new Point(100, 100);
+        // The invisible frame size surrounding the moving direction circle object. Change the numbers according to the size of the object.
+       // Point constantDirectionFrameSize = new Point(100, 100);
+        int randomNumber;
+        //Animation badGuy;
+        Texture2D floor;
+
+
+        //Test objects
+        //private Texture2D hideObject;
+        
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 550;
+            graphics.PreferredBackBufferWidth = 1000;
+            Content.RootDirectory = "Content";
+            player = new Player();
+            enemyManager = new EnemyManager(player);
+            prevKeyboardState = new KeyboardState();
+        }
+
+        /// <summary>
+        /// Allows the game to perform any initialization it needs to before starting to run.
+        /// This is where it can query for any required services and load any non-graphic
+        /// related content.  Calling base.Initialize will enumerate through any components
+        /// and initialize them as well.
+        /// </summary>
+        protected override void Initialize()
+        {
+            // TODO: Add your initialization logic here
+
+            base.Initialize();
+
+            player.sprite.position = new Vector2(100, 500);
+            playerInitialPosition = player.sprite.position.Y;
+
+            source = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
+            
+        }
+
+        /// <summary>
+        /// LoadContent will be called once per game and is the place to load
+        /// all of your content.
+        /// </summary>
+        protected override void LoadContent()
+        {
+            // Create a new SpriteBatch, which can be used to draw textures.
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            //Animations
+            
+            walkLeftAnim = new Animation(Content, "Images/Player/blob_LeftWalk", 200f, 3, true);
+            walkRightAnim = new Animation(Content, "Images/Player/blob_RightWalk", 200f, 3, true);
+            jumpingAnim = new Animation(Content, "Images/Player/blob_Jump", 200f, 5, false);
+            fallingAnim = new Animation(Content, "Images/Player/blob_Fall", 200f, 5, false);
+            idleAnimation = new Animation(Content, "Images/Player/blobIdle", 200, 5, true);
+            fallLeftAnim = new Animation(Content, "Images/Player/blob_FallLeft", 200f, 5, false);
+            jumpLeftAnim = new Animation(Content, "Images/Player/blob_JumpLeft", 200f, 5, false);
+            playerAnim = idleAnimation;
+            playerAnim.Position = player.sprite.position;
+            spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            pineAppleAnim = new Animation(Content, "Images/HideObjects/Blob_PineAppleAnim_137", 100, 7, false);
+
+            testObject = pineAppleAnim;
+
+            LoadDirectionSprites();
+            //playerAnimator = new Animation(player.sprite.texture, frameWidth, totalFrames,frameTime);
+
+
+            LoadBackground();
+            LoadEnemies();
+            LoadObjects();
+
+
+            //init destination target
+            directionManager.directionTarget.neutralTexture = Content.Load<Texture2D>("DirectionSprites/iconWhite");
+            directionManager.directionTarget.failureTexture = Content.Load<Texture2D>("DirectionSprites/arrow_Fail");
+            directionManager.directionTarget.successTexture = Content.Load<Texture2D>("DirectionSprites/arrow_Success");
+            directionManager.directionTarget.position = new Vector2(50, 200);//x value doesnt matter here
+
+            floor = Content.Load<Texture2D>("Images/BackgroundArt/floorTexture");
+
+            //badGuy = new Animation(Content, "Images/BackgroundArt/Scientist", 200 ,5, true);
+            //badGuy.Position = new Vector2((int)player.sprite.position.X, (int)player.sprite.position.Y);
+
+            //load player UI for start of game
+            keyA.texture = Content.Load<Texture2D>("DirectionSprites/A_Icon");
+            keyA.position = new Vector2(20,390);
+            keyD.texture = Content.Load<Texture2D>("DirectionSprites/D_Icon");
+            keyD.position = new Vector2(100, 390);
+            leftArrow.texture = Content.Load<Texture2D>("DirectionSprites/left arrow");
+            leftArrow.position = new Vector2(25, 350);
+            rightArrow.texture = Content.Load<Texture2D>("DirectionSprites/right arrow");
+            rightArrow.position = new Vector2(112, 350);
+
+            //finish line
+            finishLine.texture = Content.Load<Texture2D>("Images/Player/rectangleSprite");
+            finishLine.position = new Vector2(1500, 450);
+
+            //banner art
+            replay.texture = Content.Load<Texture2D>("Images/BannerArt/replay");
+            replay.position = new Vector2(200, 100);
+            victory.texture = Content.Load<Texture2D>("Images/BannerArt/VictorySprite");
+            victory.position = new Vector2(350, 50);
+        }
+
+        private void LoadObjects()
+        {
+            Sprite squareObject = new Sprite();
+            squareObject.position = new Vector2(350, 365);
+            squareObject.texture=Content.Load<Texture2D>("Images/HideObjects/pineApple_137");
+           
+            objectManager.AddObject(squareObject);
+        }
+
+        private void LoadEnemies()
+        {
+            Enemy enemy = new Enemy(new Vector2(600, 30));
+            enemyManager.Draw(spriteBatch);
+            enemy.sprite.texture = Content.Load<Texture2D>("Images/Player/Triangle");
+            enemyManager.AddEnemy(enemy);
+        }
+
+        private void LoadDirectionSprites()
+        {
+            // Loading all the direction sprites.
+            DirectionSprite directionUp = new DirectionSprite(new Vector2(50, 50), 1);
+            directionUp.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_up");
+            directionManager.AddDirection(directionUp);
+            DirectionSprite directionDown = new DirectionSprite(new Vector2(50, 50), 2);
+            directionDown.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_down");
+            directionManager.AddDirection(directionDown);
+            DirectionSprite directionLeft = new DirectionSprite(new Vector2(50, 50), 3);
+            directionLeft.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_left");
+            directionManager.AddDirection(directionLeft);
+            DirectionSprite directionRight = new DirectionSprite(new Vector2(50, 50), 4);
+            directionRight.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_right");
+            directionManager.AddDirection(directionRight);
+
+            // Loading a random number so that one object appears at a time.
+            Random randomGenerator = new Random();
+            randomNumber = randomGenerator.Next(1, 5);
+            switch(randomNumber)
+            {
+                case 1:
+                    directionUp.appearanceStatus = true;
+                    break;
+                case 2:
+                    directionDown.appearanceStatus = true;
+                    break;
+                case 3:
+                    directionLeft.appearanceStatus = true;
+                    break;
+                case 4:
+                    directionRight.appearanceStatus = true;
+                    break;
+
+            }
+        }
+
+        private void LoadBackground()
+        {
+            //load background sprites
+            mBackgroundOne.texture = Content.Load<Texture2D>("Images/BackgroundArt/the room3");
+            mBackgroundOne.position = new Vector2(-mBackgroundOne.texture.Bounds.Width, -260);
+
+            mBackgroundTwo.texture = Content.Load<Texture2D>("Images/BackgroundArt/the room3");
+            mBackgroundTwo.position = new Vector2(mBackgroundOne.position.X + mBackgroundOne.texture.Bounds.Width, -260);
+
+            mBackgroundThree.texture = Content.Load<Texture2D>("Images/BackgroundArt/the room3");
+            mBackgroundThree.position = new Vector2(mBackgroundTwo.position.X + mBackgroundTwo.texture.Bounds.Width, -260);
+
+            mBackgroundFour.texture = Content.Load<Texture2D>("Images/BackgroundArt/the room3");
+            mBackgroundFour.position = new Vector2(mBackgroundThree.position.X + mBackgroundThree.texture.Bounds.Width, -260);
+
+            mBackgroundFive.texture = Content.Load<Texture2D>("Images/BackgroundArt/the room3");
+            mBackgroundFive.position = new Vector2(mBackgroundFour.position.X + mBackgroundFour.texture.Bounds.Width, -260);
+
+            frontBackgroundSprite = mBackgroundOne;
+        }
+
+        /// <summary>
+        /// UnloadContent will be called once per game and is the place to unload
+        /// game-specific content.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            // TODO: Unload any non ContentManager content here
+        }
+
+        /// <summary>
+        /// Allows the game to run logic such as updating the world,
+        /// checking for collisions, gathering input, and playing audio.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Update(GameTime gameTime)
+        {
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
+
+            KeyboardState currKeyboardState = Keyboard.GetState();
+
+            if (currState == GameState.Finished || currState == GameState.Dead)
+            {
+                //check for Y or N pressed
+                if(currKeyboardState.IsKeyDown(Keys.Y) && !prevKeyboardState.IsKeyDown(Keys.Y))
+                {
+                    currState = GameState.Playing;
+                    player.mCurrentState = State.Idle;
+                    playerAnim = idleAnimation;
+                    ReplayPressed();
+                }
+                else if(currKeyboardState.IsKeyDown(Keys.N) && !prevKeyboardState.IsKeyDown(Keys.N))
+                {
+                    Exit();
+                }
+                return;
+            }
+
+            //has player crossed finish line?
+            if(player.sprite.position.X > finishLine.position.X)
+            {
+                currState = GameState.Finished;
+                return;
+            }
+
+            // TODO: Add your update logic here
+
+            base.Update(gameTime);
+           
+            if (player.nearObject != null)
+            {
+                randomNumber = directionManager.UpdateMovement();
+            }
+           
+            // checked for collision
+            // check if in range of object; if true, display UI in DirectionSpriteManager
+            // if UI is displayed, check for user input; the first key stroke with start the animation of the UI
+            if (directionManager.CollisionForDirectionSprites())
+            {
+                CheckKeyPressed();
+            }
+            else
+            {
+                if ((directionManager.collisionState == CollisionState.Late)
+                    || currKeyboardState.IsKeyDown(Keys.Down) && !prevKeyboardState.IsKeyDown(Keys.Down)
+                    || currKeyboardState.IsKeyDown(Keys.Up) && !prevKeyboardState.IsKeyDown(Keys.Up)
+                    || currKeyboardState.IsKeyDown(Keys.Right) && !prevKeyboardState.IsKeyDown(Keys.Right)
+                    || currKeyboardState.IsKeyDown(Keys.Left) && !prevKeyboardState.IsKeyDown(Keys.Left))
+                {
+                    player.mCurrentState = State.Idle;
+                    directionManager.directionTarget.currState = TargetState.Failure;
+                    directionManager.Reset(true); //Removed direction reset so that the arrow goes till the end.
+                }
+            }
+
+            if(!objectManager.CheckPlayerCollisionWithObjects(player))
+            {
+                directionManager.directionTarget.currState = TargetState.Neutral;
+                directionManager.Reset(true);
+            }
+
+            
+
+            playerAnim.PlayAnim(gameTime);
+            //badGuy.PlayAnim(gameTime);
+
+            UpdateMovement(currKeyboardState);
+            UpdateJump(currKeyboardState);
+            UpdateBackground();
+            enemyManager.UpdateMovement();
+           
+            playerAnim.Position = new Vector2(player.sprite.position.X-33, player.sprite.position.Y - 64);
+
+            testObject.Position = new Vector2(player.sprite.position.X - 60, player.sprite.position.Y - 139 );
+
+
+
+            //set the player to the shape of the object if disguised
+            if (directionManager.directionTarget.currState == TargetState.Success && player.mCurrentState == State.Disguised)
+            {
+                
+                playerAnim = pineAppleAnim;
+                playerAnim.Position = player.nearObject.position;//snap to the position of the object we are mimicking.
+            }
+            else
+            {
+                pineAppleAnim.CurrentFrame = 0;//reset the frames on the objects animation.
+            }
+
+            // check if enemy can see player
+            if (enemyManager.CanEnemySeePlayer())
+            {
+                //then game over
+                player.mCurrentState = State.Found;
+                currState = GameState.Dead;
+            }
+            //scientistAnim.Position = new Vector2(400, -30);
+            prevKeyboardState = currKeyboardState;
+        }
+
+        private void UpdateBackground()
+        {
+            if (mBackgroundOne.position.X < -mBackgroundOne.texture.Bounds.Width * 2)
+            {
+                mBackgroundOne.position.X = mBackgroundFive.position.X + mBackgroundFive.texture.Bounds.Width;
+                frontBackgroundSprite = mBackgroundTwo;
+            }
+
+            else if (mBackgroundTwo.position.X < -mBackgroundTwo.texture.Bounds.Width * 2)
+            {
+                mBackgroundTwo.position.X = mBackgroundOne.position.X + mBackgroundOne.texture.Bounds.Width;
+                frontBackgroundSprite = mBackgroundThree;
+            }
+
+            else if (mBackgroundThree.position.X < -mBackgroundThree.texture.Bounds.Width * 2)
+            {
+                mBackgroundThree.position.X = mBackgroundTwo.position.X + mBackgroundTwo.texture.Bounds.Width;
+                frontBackgroundSprite = mBackgroundFour;
+            }
+
+            else if (mBackgroundFour.position.X < -mBackgroundFour.texture.Bounds.Width * 2)
+            {
+                mBackgroundFour.position.X = mBackgroundThree.position.X + mBackgroundThree.texture.Bounds.Width;
+                frontBackgroundSprite = mBackgroundFive;
+            }
+
+            else if (mBackgroundFive.position.X < -mBackgroundFive.texture.Bounds.Width * 2)
+            {
+                mBackgroundFive.position.X = mBackgroundFour.position.X + mBackgroundFour.texture.Bounds.Width;
+                frontBackgroundSprite = mBackgroundOne;
+            }
+        }
+
+        private void UpdateJump(KeyboardState state)
+        {
+            if (player.mCurrentState == State.Walking || player.mCurrentState == State.Idle)
+            {
+                if(player.sprite.position.Y!=playerInitialPosition)
+                {
+                    player.sprite.position.Y = playerInitialPosition;
+                }
+                if (state.IsKeyDown(Keys.Space) == true)
+                {
+                    Jump();
+                }
+            }
+            else if (player.mCurrentState == State.Jumping)
+            {
+                if (player.jumpStartPosition.Y - player.sprite.position.Y >= 100)// is it at max jump height
+                {
+                    player.mCurrentState = State.Falling;
+                }
+            }
+            else if (player.mCurrentState == State.Falling)
+            {
+                if (player.jumpStartPosition.Y <= player.sprite.position.Y)
+                {
+                    player.mCurrentState = state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.D) ? State.Walking : State.Idle;
+                    player.sprite.position.Y = player.jumpStartPosition.Y;
+                }
+            }
+        }
+
+        private void UpdateMovement(KeyboardState state)
+        {
+            if (state.IsKeyDown(Keys.A) && frontBackgroundSprite.position.X < 0)//move left
+            {
+                if (player.mCurrentState == State.Disguised)
+                {
+                    directionManager.directionTarget.currState = TargetState.Failure;
+                }
+                if (player.mCurrentState != State.Jumping && player.mCurrentState != State.Falling)
+                {
+                    player.mCurrentState = State.Walking;
+                    //player.sprite.texture = leftWalkingSprite;
+                    playerAnim = walkLeftAnim;
+                }
+
+                MoveBackground(5);
+
+                enemyManager.PlayerMoved(5);
+                objectManager.PlayerMoved(5);
+                keyA.position.X += 5;
+                keyD.position.X += 5;
+                leftArrow.position.X += 5;
+                rightArrow.position.X += 5;
+                finishLine.position.X += 5;
+            }
+            else if (state.IsKeyDown(Keys.D))//move right
+            {
+                if (player.mCurrentState == State.Disguised)
+                {
+                    directionManager.directionTarget.currState = TargetState.Failure;
+                }
+                if (player.mCurrentState != State.Jumping && player.mCurrentState != State.Falling)
+                {
+                    player.mCurrentState = State.Walking;
+                    playerAnim = walkRightAnim;
+                }
+
+                MoveBackground(-5);
+
+                enemyManager.PlayerMoved(-5);
+                objectManager.PlayerMoved(-5);
+                keyA.position.X -= 5;
+                keyD.position.X -= 5;
+                leftArrow.position.X -= 5;
+                rightArrow.position.X -= 5;
+                finishLine.position.X -= 5;
+            }
+
+            if (player.mCurrentState == State.Jumping)//jumping. i.e. moving upward
+            {
+                if (state.IsKeyDown(Keys.A))
+                    playerAnim = jumpLeftAnim;
+                else
+                    playerAnim = jumpingAnim;
+                player.sprite.position.Y -= 5;
+            }
+            else if (player.mCurrentState == State.Falling)//moving downward
+            {
+                if (state.IsKeyDown(Keys.A))
+                    playerAnim = fallLeftAnim;
+                else
+                    playerAnim = fallingAnim;
+
+                player.sprite.position.Y += 5;
+            }
+            else if(!state.IsKeyDown(Keys.A) && !state.IsKeyDown(Keys.D))//idle
+            {
+                playerAnim = idleAnimation;
+            }
+        }
+
+        private void Jump()
+        {
+            if (player.mCurrentState != State.Jumping)
+            {
+                player.mCurrentState = State.Jumping;
+                
+                player.jumpStartPosition = player.sprite.position;
+            }
+
+        }
+
+        private void MoveBackground(float amount)
+        {
+            mBackgroundOne.position.X += amount;
+            mBackgroundTwo.position.X += amount;
+            mBackgroundThree.position.X += amount;
+            mBackgroundFour.position.X += amount;
+            mBackgroundFive.position.X += amount;
+        }
+
+        /// <summary>
+        /// This is called when the game should draw itself.
+        /// </summary>
+        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.Gray);
+
+            // TODO: Add your drawing code here
+
+            base.Draw(gameTime);
+
+
+            spriteBatch.Begin();
+
+            
+
+            //draw background first
+            mBackgroundOne.Draw(spriteBatch);
+            mBackgroundTwo.Draw(spriteBatch);
+            mBackgroundThree.Draw(spriteBatch);
+            mBackgroundFour.Draw(spriteBatch);
+            mBackgroundFive.Draw(spriteBatch);
+            enemyManager.Draw(spriteBatch);
+            //badGuy.Draw(spriteBatch);
+            objectManager.Draw(spriteBatch);
+            spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
+
+
+
+
+            //draw "blob"
+            Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
+           
+            playerAnim.Draw(spriteBatch);
+            //Draws the floor
+            spriteBatch.Draw(floor, new Rectangle(0, 497, 1000, 600), Color.DarkGray);
+
+            if (player.nearObject!=null) {
+                directionManager.Draw(spriteBatch,player.nearObject.position.X);               
+                //constantCircle.Draw(spriteBatch);
+            }
+
+            spriteBatch.Draw(keyA.texture, keyA.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(keyD.texture, keyD.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(leftArrow.texture, leftArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(rightArrow.texture, rightArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
+
+            if(currState == GameState.Dead || currState == GameState.Finished)
+            {
+                spriteBatch.Draw(replay.texture, replay.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.2f, SpriteEffects.None, 0.0f);
+            }
+            if(currState == GameState.Finished)
+            {
+                spriteBatch.Draw(victory.texture, victory.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.2f, SpriteEffects.None, 0.0f);
+            }
+
+            spriteBatch.End();
+        }
+        
+
+
+
+        private void CheckKeyPressed()
+        {
+            //bool intersects = false;
+            var newState = Keyboard.GetState();
+            if ((newState.IsKeyDown(Keys.Down) && !prevKeyboardState.IsKeyDown(Keys.Down) && randomNumber == 2)
+                || (newState.IsKeyDown(Keys.Up) && !prevKeyboardState.IsKeyDown(Keys.Up) && randomNumber == 1)
+                || (newState.IsKeyDown(Keys.Left) && !prevKeyboardState.IsKeyDown(Keys.Left) && randomNumber == 3)
+                || (newState.IsKeyDown(Keys.Right) && !prevKeyboardState.IsKeyDown(Keys.Right) && randomNumber == 4))
+            {
+                //intersects = true;
+                player.mCurrentState = State.Disguised;
+                directionManager.directionTarget.currState = TargetState.Success;
+                directionManager.Reset(false);
+                directionManager.IncrementSpeed();
+            }
+            else if(directionManager.collisionState == CollisionState.Late)
+            {
+                player.mCurrentState = State.Idle;
+                directionManager.directionTarget.currState = TargetState.Failure;
+
+                directionManager.Reset(true);
+            }
+            else if(newState.IsKeyDown(Keys.Down) && !prevKeyboardState.IsKeyDown(Keys.Down)
+                || newState.IsKeyDown(Keys.Up) && !prevKeyboardState.IsKeyDown(Keys.Up)
+                || newState.IsKeyDown(Keys.Right) && !prevKeyboardState.IsKeyDown(Keys.Right)
+                || newState.IsKeyDown(Keys.Left) && !prevKeyboardState.IsKeyDown(Keys.Left))
+            {
+                
+                player.mCurrentState = State.Idle;
+                directionManager.directionTarget.currState = TargetState.Failure;
+                directionManager.Reset(true);  //Removed direction reset so that the arrow goes till the end.
+            }
+        }
+
+        private void ReplayPressed()
+        {
+            //load background sprites
+            mBackgroundOne.position = new Vector2(-mBackgroundOne.texture.Bounds.Width, -260);
+            mBackgroundTwo.position = new Vector2(mBackgroundOne.position.X + mBackgroundOne.texture.Bounds.Width, -260);
+            mBackgroundThree.position = new Vector2(mBackgroundTwo.position.X + mBackgroundTwo.texture.Bounds.Width, -260);
+            mBackgroundFour.position = new Vector2(mBackgroundThree.position.X + mBackgroundThree.texture.Bounds.Width, -260);
+            mBackgroundFive.position = new Vector2(mBackgroundFour.position.X + mBackgroundFour.texture.Bounds.Width, -260);
+            frontBackgroundSprite = mBackgroundOne;
+
+            float offset = 1500 - finishLine.position.X;
+            objectManager.ResetObjects(offset);
+            enemyManager.ResetEnemies(offset);
+
+            //load player UI for start of game
+            keyA.position = new Vector2(20, 390);
+            keyD.position = new Vector2(100, 390);
+            leftArrow.position = new Vector2(25, 350);
+            rightArrow.position = new Vector2(112, 350);
+
+            //finish line
+            finishLine.position = new Vector2(1500, 450);
+        }
+    }
+}
