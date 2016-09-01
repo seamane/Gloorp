@@ -208,7 +208,7 @@ namespace Gloorp
 
         private void LoadEnemies()
         {
-            Enemy enemy = new Enemy(new Vector2(600, 30));
+            Enemy enemy = new GroundEnemy(new Vector2(600, 440));
             enemyManager.Draw(spriteBatch);
             enemy.sprite.texture = Content.Load<Texture2D>("Images/Player/Triangle");
             enemyManager.AddEnemy(enemy);
