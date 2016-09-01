@@ -27,6 +27,8 @@ namespace MyFirstMonoGame
         public Rectangle getRect()
         { return new Rectangle((int)position.X, (int)position.X, texture.Width, texture.Height); }
 
+        public String getName()
+        { return texture.ToString(); }
         public void Reset(float offset)
         {
             position.X += offset;

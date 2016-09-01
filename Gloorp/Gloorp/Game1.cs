@@ -52,9 +52,10 @@ namespace MyFirstMonoGame
         float playerInitialPosition;
         
         Animation playerAnim;//holds the current animation for the player
-        Animation walkLeftAnim,walkRightAnim,jumpingAnim,fallingAnim,idleAnimation,fallLeftAnim,jumpLeftAnim,pineAppleAnim;
+        Animation walkLeftAnim,walkRightAnim,jumpingAnim,fallingAnim,idleAnimation,fallLeftAnim,jumpLeftAnim,pineAppleAnim,figureAnim;
 
         Animation testObject;
+        Animation badGuy;
 
         Rectangle source;
 
@@ -142,6 +143,7 @@ namespace MyFirstMonoGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             pineAppleAnim = new Animation(Content, "Images/HideObjects/Blob_PineAppleAnim_137", 100, 7, false);
+            figureAnim = new Animation(Content, "Images/HideObjects/Blob_figureAnim_150", 100, 8, false);
 
             testObject = pineAppleAnim;
 
@@ -162,8 +164,8 @@ namespace MyFirstMonoGame
 
             floor = Content.Load<Texture2D>("Images/BackgroundArt/floorTexture");
 
-            //badGuy = new Animation(Content, "Images/BackgroundArt/Scientist", 200 ,5, true);
-            //badGuy.Position = new Vector2((int)player.sprite.position.X, (int)player.sprite.position.Y);
+            badGuy = new Animation(Content, "Images/BackgroundArt/Scientist", 400 ,9, true);
+            badGuy.Position = new Vector2(500, 170);
 
             //load player UI for start of game
             keyA.texture = Content.Load<Texture2D>("DirectionSprites/A_Icon");
@@ -189,10 +191,17 @@ namespace MyFirstMonoGame
         private void LoadObjects()
         {
             Sprite squareObject = new Sprite();
+            Sprite figureObject = new Sprite();
+
+            figureObject.position = new Vector2(600, 365);
             squareObject.position = new Vector2(350, 365);
+
+            figureObject.texture = Content.Load<Texture2D>("Images/HideObjects/Figure_150");
             squareObject.texture=Content.Load<Texture2D>("Images/HideObjects/pineApple_137");
            
             objectManager.AddObject(squareObject);
+            objectManager.AddObject(figureObject);
+
         }
 
         private void LoadEnemies()
@@ -347,7 +356,8 @@ namespace MyFirstMonoGame
             
 
             playerAnim.PlayAnim(gameTime);
-            //badGuy.PlayAnim(gameTime);
+
+            badGuy.PlayAnim(gameTime);
 
             UpdateMovement(currKeyboardState);
             UpdateJump(currKeyboardState);
@@ -363,8 +373,11 @@ namespace MyFirstMonoGame
             //set the player to the shape of the object if disguised
             if (directionManager.directionTarget.currState == TargetState.Success && player.mCurrentState == State.Disguised)
             {
-                
-                playerAnim = pineAppleAnim;
+
+                if (player.nearObject.getName() == "Images/HideObjects/pineApple_137")
+                    playerAnim = pineAppleAnim;
+                else
+                    playerAnim = figureAnim;
                 playerAnim.Position = player.nearObject.position;//snap to the position of the object we are mimicking.
             }
             else
@@ -379,7 +392,7 @@ namespace MyFirstMonoGame
                 player.mCurrentState = State.Found;
                 currState = GameState.Dead;
             }
-            //scientistAnim.Position = new Vector2(400, -30);
+            
             prevKeyboardState = currKeyboardState;
         }
 
@@ -470,6 +483,7 @@ namespace MyFirstMonoGame
                 leftArrow.position.X += 5;
                 rightArrow.position.X += 5;
                 finishLine.position.X += 5;
+                badGuy.Position = new Vector2(badGuy.Position.X+5,badGuy.Position.Y);
             }
             else if (state.IsKeyDown(Keys.D))//move right
             {
@@ -492,6 +506,7 @@ namespace MyFirstMonoGame
                 leftArrow.position.X -= 5;
                 rightArrow.position.X -= 5;
                 finishLine.position.X -= 5;
+                badGuy.Position = new Vector2(badGuy.Position.X -5, badGuy.Position.Y);
             }
 
             if (player.mCurrentState == State.Jumping)//jumping. i.e. moving upward
@@ -535,6 +550,7 @@ namespace MyFirstMonoGame
             mBackgroundThree.position.X += amount;
             mBackgroundFour.position.X += amount;
             mBackgroundFive.position.X += amount;
+           
         }
 
         /// <summary>
@@ -561,7 +577,10 @@ namespace MyFirstMonoGame
             mBackgroundFour.Draw(spriteBatch);
             mBackgroundFive.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
-            //badGuy.Draw(spriteBatch);
+
+            //draw badguy
+            badGuy.Draw(spriteBatch);
+
             objectManager.Draw(spriteBatch);
             spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
 
