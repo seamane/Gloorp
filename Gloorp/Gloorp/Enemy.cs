@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 
-namespace MyFirstMonoGame
+namespace Gloorp
 {
     public enum EnemyState
     {
@@ -14,20 +14,20 @@ namespace MyFirstMonoGame
     {
         public Sprite sprite;
         private Vector2 anchor;
-        int speed;
+        const int speed = 3;
         int direction;//either -1 or 1; for now...
         int angleDirection;
         EnemyState currState;
         float angle = 0;//in RADIANS
         const float maxRotation = (float)Math.PI / 9.0f;//this equates to 15 degrees
         const int patrollingRadius = 550;
+        const float rotationSpeed = .007f;
 
         public Enemy(Vector2 anchor)
         {
             this.anchor = anchor;
             sprite = new Sprite();
             sprite.position = anchor;
-            speed = 2;
             direction = 1;
             angleDirection = 1;
             currState = EnemyState.Patrol;
@@ -48,7 +48,7 @@ namespace MyFirstMonoGame
                     }
 
                     sprite.position.X += direction * speed;
-                    angle += 0.004f * angleDirection;
+                    angle += rotationSpeed * angleDirection;
                     break;
                 case EnemyState.Scanning:
                     break;
@@ -57,7 +57,7 @@ namespace MyFirstMonoGame
             }
         }
 
-        public void PlayerMoved(int amount)
+        public void PlayerMoved(float amount)
         {
             anchor.X += amount;
             sprite.position.X += amount;

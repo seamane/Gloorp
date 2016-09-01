@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MyFirstMonoGame
+namespace Gloorp
 {
     class ObjectManager
     {
@@ -24,7 +24,7 @@ namespace MyFirstMonoGame
             objects.Remove(sprite);
         }
 
-        public void PlayerMoved(int amount)
+        public void PlayerMoved(float amount)
         {
             foreach (Sprite e in objects)
             {

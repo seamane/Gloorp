@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyFirstMonoGame
+namespace Gloorp
 {
     class DirectionSprite
     {
@@ -16,7 +16,7 @@ namespace MyFirstMonoGame
         float speed;
         public int directionNumber;
         public bool appearanceStatus=false;
-        const float initialSpeed = 2.5f;
+        const float initialSpeed = 3.5f;
 
 
         public DirectionSprite(Vector2 anchor, int direction)

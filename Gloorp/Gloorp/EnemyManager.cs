@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MyFirstMonoGame
+namespace Gloorp
 {
     class EnemyManager
     {
@@ -30,7 +30,7 @@ namespace MyFirstMonoGame
             }
         }
 
-        public void PlayerMoved(int amount)
+        public void PlayerMoved(float amount)
         {
             foreach (Enemy e in enemies)
             {

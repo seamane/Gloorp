@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
 
-namespace MyFirstMonoGame
+namespace Gloorp
 {
     class Sprite
     {
@@ -20,7 +20,7 @@ namespace MyFirstMonoGame
             batch.Draw(texture, position, Color.White);
         }
         
-        public void PlayerMoved(int amount)
+        public void PlayerMoved(float amount)
         {
             position.X += amount;
         }

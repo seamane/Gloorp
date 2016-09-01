@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyFirstMonoGame
+namespace Gloorp
 {
 #if WINDOWS || LINUX
     /// <summary>

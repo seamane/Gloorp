@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace MyFirstMonoGame
+namespace Gloorp
 {
     /// <summary>
     /// This is the main type for your game.
@@ -73,6 +73,8 @@ namespace MyFirstMonoGame
 
         ObjectManager objectManager = new ObjectManager();
         EnemyManager enemyManager;
+
+        const float playerSpeed = 3;
 
         // contains all the directions
         DirectionSpriteManager directionManager = new DirectionSpriteManager();
@@ -474,15 +476,15 @@ namespace MyFirstMonoGame
                     playerAnim = walkLeftAnim;
                 }
 
-                MoveBackground(5);
+                MoveBackground(playerSpeed);
 
-                enemyManager.PlayerMoved(5);
-                objectManager.PlayerMoved(5);
-                keyA.position.X += 5;
-                keyD.position.X += 5;
-                leftArrow.position.X += 5;
-                rightArrow.position.X += 5;
-                finishLine.position.X += 5;
+                enemyManager.PlayerMoved(playerSpeed);
+                objectManager.PlayerMoved(playerSpeed);
+                keyA.position.X += playerSpeed;
+                keyD.position.X += playerSpeed;
+                leftArrow.position.X += playerSpeed;
+                rightArrow.position.X += playerSpeed;
+                finishLine.position.X += playerSpeed;
                 badGuy.Position = new Vector2(badGuy.Position.X+5,badGuy.Position.Y);
             }
             else if (state.IsKeyDown(Keys.D))//move right
@@ -497,16 +499,16 @@ namespace MyFirstMonoGame
                     playerAnim = walkRightAnim;
                 }
 
-                MoveBackground(-5);
+                MoveBackground(-playerSpeed);
 
-                enemyManager.PlayerMoved(-5);
-                objectManager.PlayerMoved(-5);
-                keyA.position.X -= 5;
-                keyD.position.X -= 5;
-                leftArrow.position.X -= 5;
-                rightArrow.position.X -= 5;
-                finishLine.position.X -= 5;
-                badGuy.Position = new Vector2(badGuy.Position.X -5, badGuy.Position.Y);
+                enemyManager.PlayerMoved(-playerSpeed);
+                objectManager.PlayerMoved(-playerSpeed);
+                keyA.position.X -= playerSpeed;
+                keyD.position.X -= playerSpeed;
+                leftArrow.position.X -= playerSpeed;
+                rightArrow.position.X -= playerSpeed;
+                finishLine.position.X -= playerSpeed;
+                badGuy.Position = new Vector2(badGuy.Position.X - playerSpeed, badGuy.Position.Y);
             }
 
             if (player.mCurrentState == State.Jumping)//jumping. i.e. moving upward
@@ -579,7 +581,7 @@ namespace MyFirstMonoGame
             enemyManager.Draw(spriteBatch);
 
             //draw badguy
-            badGuy.Draw(spriteBatch);
+            //badGuy.Draw(spriteBatch);
 
             objectManager.Draw(spriteBatch);
             spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);

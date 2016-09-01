@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AirEnemy.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="DirectionSprite.cs" />
     <Compile Include="DirectionSpriteManager.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyManager.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="GroundEnemy.cs" />
     <Compile Include="ObjectManager.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
