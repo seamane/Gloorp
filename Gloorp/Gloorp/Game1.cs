@@ -115,7 +115,7 @@ namespace Gloorp
 
             base.Initialize();
 
-            player.sprite.position = new Vector2(100, 500);
+            player.sprite.position = new Vector2(450, 500);
             playerInitialPosition = player.sprite.position.Y;
 
             source = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
@@ -167,27 +167,27 @@ namespace Gloorp
             floor = Content.Load<Texture2D>("Images/BackgroundArt/floorTexture");
 
             badGuy = new Animation(Content, "Images/BackgroundArt/Scientist", 400 ,9, true);
-            badGuy.Position = new Vector2(500, 170);
+            badGuy.Position = new Vector2(850, 170);
 
             //load player UI for start of game
             keyA.texture = Content.Load<Texture2D>("DirectionSprites/A_Icon");
-            keyA.position = new Vector2(20,390);
+            keyA.position = new Vector2(370,390);
             keyD.texture = Content.Load<Texture2D>("DirectionSprites/D_Icon");
-            keyD.position = new Vector2(100, 390);
+            keyD.position = new Vector2(450, 390);
             leftArrow.texture = Content.Load<Texture2D>("DirectionSprites/left arrow");
-            leftArrow.position = new Vector2(25, 350);
+            leftArrow.position = new Vector2(375, 350);
             rightArrow.texture = Content.Load<Texture2D>("DirectionSprites/right arrow");
-            rightArrow.position = new Vector2(112, 350);
+            rightArrow.position = new Vector2(462, 350);
 
             //finish line
             finishLine.texture = Content.Load<Texture2D>("Images/Player/rectangleSprite");
-            finishLine.position = new Vector2(1500, 450);
+            finishLine.position = new Vector2(1850, 450);
 
             //banner art
             replay.texture = Content.Load<Texture2D>("Images/BannerArt/replay");
-            replay.position = new Vector2(200, 100);
+            replay.position = new Vector2(220, 100);
             victory.texture = Content.Load<Texture2D>("Images/BannerArt/VictorySprite");
-            victory.position = new Vector2(220, 10);
+            victory.position = new Vector2(240, 10);
         }
 
         private void LoadObjects()
@@ -195,8 +195,8 @@ namespace Gloorp
             Sprite squareObject = new Sprite();
             Sprite figureObject = new Sprite();
 
-            figureObject.position = new Vector2(600, 365);
-            squareObject.position = new Vector2(350, 365);
+            figureObject.position = new Vector2(1150, 365);
+            squareObject.position = new Vector2(700, 365);
 
             figureObject.texture = Content.Load<Texture2D>("Images/HideObjects/Figure_150");
             squareObject.texture=Content.Load<Texture2D>("Images/HideObjects/pineApple_137");
@@ -208,8 +208,12 @@ namespace Gloorp
 
         private void LoadEnemies()
         {
-            Enemy enemy = new GroundEnemy(new Vector2(600, 440));
-            enemyManager.Draw(spriteBatch);
+            Enemy enemy = new GroundEnemy(new Vector2(950, 440));
+            //enemyManager.Draw(spriteBatch);
+            enemy.sprite.texture = Content.Load<Texture2D>("Images/Player/squareSprite");
+            enemyManager.AddEnemy(enemy);
+
+            enemy = new AirEnemy(new Vector2(1250, 200));
             enemy.sprite.texture = Content.Load<Texture2D>("Images/Player/Triangle");
             enemyManager.AddEnemy(enemy);
         }
@@ -665,18 +669,18 @@ namespace Gloorp
             mBackgroundFive.position = new Vector2(mBackgroundFour.position.X + mBackgroundFour.texture.Bounds.Width, -260);
             frontBackgroundSprite = mBackgroundOne;
 
-            float offset = 1500 - finishLine.position.X;
+            float offset = 1850 - finishLine.position.X;
             objectManager.ResetObjects(offset);
             enemyManager.ResetEnemies(offset);
 
             //load player UI for start of game
-            keyA.position = new Vector2(20, 390);
-            keyD.position = new Vector2(100, 390);
-            leftArrow.position = new Vector2(25, 350);
-            rightArrow.position = new Vector2(112, 350);
+            keyA.position.X += offset;
+            keyD.position.X += offset;
+            leftArrow.position.X += offset;
+            rightArrow.position.X += offset;
 
             //finish line
-            finishLine.position = new Vector2(1500, 450);
+            finishLine.position.X += offset;
         }
     }
 }

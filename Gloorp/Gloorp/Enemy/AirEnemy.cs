@@ -6,13 +6,13 @@ namespace Gloorp
 {
     class AirEnemy : Enemy
     {
-        const float viewRadius = (float)Math.PI / 9.0f;//this equates to 15 degrees
+        const float viewRadius = (float)Math.PI / 36.0f;//this equates to 5 degrees
         Vector2 lookAt = new Vector2(0, 1);//direction the enemy is looking
 
         public AirEnemy(Vector2 anchor) : base(anchor)
         {
-            speed = 3;
-            patrollingRadius = 550;
+            speed = 2;
+            patrollingRadius = 400;
         }
 
         public override bool CanSeePlayer(Player player)
