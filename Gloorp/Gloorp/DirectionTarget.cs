@@ -12,11 +12,13 @@ namespace Gloorp
     {
         Success,
         Failure,
+        Trigger,
         Neutral
     }
     class DirectionTarget
     {
         public Texture2D neutralTexture;
+        public Texture2D triggerdTexture;
         public Texture2D successTexture;
         public Texture2D failureTexture;
         public Vector2 position;
@@ -32,6 +34,9 @@ namespace Gloorp
                     break;
                 case TargetState.Neutral:
                     batch.Draw(neutralTexture, pos, Color.White);
+                    break;
+                case TargetState.Trigger:
+                    batch.Draw(triggerdTexture, pos, Color.White);
                     break;
                 case TargetState.Success:
                     batch.Draw(successTexture, pos, Color.White);

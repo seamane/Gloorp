@@ -92,7 +92,7 @@ namespace Gloorp
                 var distance = directionSprite.sprite.position.Y - directionTarget.position.Y; //Distance should be greater than or equal to -10
                 if (distance < 18 && distance > -20)
                 {
-                    collisionState = CollisionState.OK;
+                    collisionState = CollisionState.OK;  
                     return true;
                 }
                 else if(distance >= 18)

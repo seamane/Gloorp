@@ -17,6 +17,7 @@ namespace Gloorp
         public int directionNumber;
         public bool appearanceStatus=false;
         const float initialSpeed = 3.5f;
+        float scale = 0f;
 
 
         public DirectionSprite(Vector2 anchor, int direction)
@@ -27,7 +28,11 @@ namespace Gloorp
             sprite.position = anchor;
             speed = initialSpeed;
         }
-
+        public float Scale
+        {
+            get{ return scale; }
+            set{ scale = value; }
+        }
         public Sprite getDirectionSprite()
         {
             return sprite;

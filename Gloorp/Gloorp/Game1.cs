@@ -40,9 +40,18 @@ namespace Gloorp
         Sprite keyD = new Sprite();
         Sprite leftArrow = new Sprite();
         Sprite rightArrow = new Sprite();
+        Sprite whiteTriggerd = new Sprite();
+
+       
 
         //finish line
         Sprite finishLine = new Sprite();
+        SpriteFont gameFont;
+        string outPut;
+        string replayText = "Replay?:\n 'Y' or 'N'";
+        string victoryText = "VICTORY\n Replay?: 'Y' or 'N'";
+        string blank = "";
+        
 
         //Banner sprites
         //Sprite tryAgain = new Sprite();
@@ -89,6 +98,19 @@ namespace Gloorp
         Texture2D floor;
         PlatformManager platformManager = new PlatformManager();
 
+        public SpriteFont GameFont
+        {
+            get
+            {
+                return gameFont;
+            }
+
+            set
+            {
+                gameFont = value;
+            }
+        }
+
         //Test objects
         //private Texture2D hideObject;
 
@@ -118,6 +140,8 @@ namespace Gloorp
             player.sprite.position = new Vector2(450, 500);
             player.initialPosition = player.sprite.position;
 
+       
+
             source = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
             
         }
@@ -144,9 +168,11 @@ namespace Gloorp
             playerAnim.Position = player.sprite.position;
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            
             pineAppleAnim = new Animation(Content, "Images/HideObjects/Blob_PineAppleAnim_137", 100, 7, false);
             figureAnim = new Animation(Content, "Images/HideObjects/Blob_figureAnim_150", 100, 8, false);
 
+            
             testObject = pineAppleAnim;
 
             LoadDirectionSprites();
@@ -161,6 +187,7 @@ namespace Gloorp
 
             //init destination target
             directionManager.directionTarget.neutralTexture = Content.Load<Texture2D>("DirectionSprites/iconWhite");
+            directionManager.directionTarget.triggerdTexture = Content.Load<Texture2D>("DirectionSprites/iconWhite_Triggerd");
             directionManager.directionTarget.failureTexture = Content.Load<Texture2D>("DirectionSprites/arrow_Fail");
             directionManager.directionTarget.successTexture = Content.Load<Texture2D>("DirectionSprites/arrow_Success");
             directionManager.directionTarget.position = new Vector2(50, 200);//x value doesnt matter here
@@ -189,6 +216,10 @@ namespace Gloorp
             replay.position = new Vector2(220, 100);
             victory.texture = Content.Load<Texture2D>("Images/BannerArt/VictorySprite");
             victory.position = new Vector2(240, 10);
+
+            gameFont = Content.Load<SpriteFont>("Fonts/GameFont");
+            outPut = blank;
+            
         }
 
         private void LoadPlatforms()
@@ -215,13 +246,16 @@ namespace Gloorp
 
         private void LoadEnemies()
         {
+            
             Enemy enemy = new GroundEnemy(new Vector2(950, 440));
+          
             //enemyManager.Draw(spriteBatch);
-            enemy.sprite.texture = Content.Load<Texture2D>("Images/Player/squareSprite");
+            enemy.sprite.texture = Content.Load<Texture2D>("Images/Enemies/Ground_Enemy");
             enemyManager.AddEnemy(enemy);
 
+            
             enemy = new AirEnemy(new Vector2(1250, 200));
-            enemy.sprite.texture = Content.Load<Texture2D>("Images/Player/Triangle");
+            enemy.sprite.texture = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
             enemyManager.AddEnemy(enemy);
         }
 
@@ -465,7 +499,6 @@ namespace Gloorp
                 if (player.mCurrentState != State.Jumping && player.mCurrentState != State.Falling)
                 {
                     player.mCurrentState = State.Walking;
-                    //player.sprite.texture = leftWalkingSprite;
                     playerAnim = walkLeftAnim;
                 }
 
@@ -568,14 +601,13 @@ namespace Gloorp
             mBackgroundFive.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
             platformManager.Draw(spriteBatch);
+
+            
             //draw badguy
             //badGuy.Draw(spriteBatch);
 
             objectManager.Draw(spriteBatch);
             spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
-
-
-
 
             //draw "blob"
             Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
@@ -596,13 +628,15 @@ namespace Gloorp
 
             if(currState == GameState.Dead || currState == GameState.Finished)
             {
-                spriteBatch.Draw(replay.texture, replay.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.2f, SpriteEffects.None, 0.0f);
+                //spriteBatch.Draw(replay.texture, replay.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.2f, SpriteEffects.None, 0.0f);
+                outPut = replayText;//change the text so it asks for replay
             }
             if(currState == GameState.Finished)
             {
-                spriteBatch.Draw(victory.texture, victory.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0.0f);
+                //spriteBatch.Draw(victory.texture, victory.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0.0f);
+                outPut = victoryText;//change the text so it says Victory
             }
-
+            spriteBatch.DrawString(gameFont, outPut, new Vector2(400, 200), Color.Black);//draws the font to the screen. its the top layer
             spriteBatch.End();
         }
         
@@ -613,6 +647,7 @@ namespace Gloorp
         {
             //bool intersects = false;
             var newState = Keyboard.GetState();
+            
             if ((newState.IsKeyDown(Keys.Down) && !prevKeyboardState.IsKeyDown(Keys.Down) && randomNumber == 2)
                 || (newState.IsKeyDown(Keys.Up) && !prevKeyboardState.IsKeyDown(Keys.Up) && randomNumber == 1)
                 || (newState.IsKeyDown(Keys.Left) && !prevKeyboardState.IsKeyDown(Keys.Left) && randomNumber == 3)
@@ -620,7 +655,7 @@ namespace Gloorp
             {
                 //intersects = true;
                 player.mCurrentState = State.Disguised;
-                directionManager.directionTarget.currState = TargetState.Success;
+                directionManager.directionTarget.currState = TargetState.Success;               
                 directionManager.Reset(false);
                 directionManager.IncrementSpeed();
             }
@@ -628,19 +663,18 @@ namespace Gloorp
             {
                 player.mCurrentState = State.Idle;
                 directionManager.directionTarget.currState = TargetState.Failure;
-
                 directionManager.Reset(true);
             }
             else if(newState.IsKeyDown(Keys.Down) && !prevKeyboardState.IsKeyDown(Keys.Down)
                 || newState.IsKeyDown(Keys.Up) && !prevKeyboardState.IsKeyDown(Keys.Up)
                 || newState.IsKeyDown(Keys.Right) && !prevKeyboardState.IsKeyDown(Keys.Right)
                 || newState.IsKeyDown(Keys.Left) && !prevKeyboardState.IsKeyDown(Keys.Left))
-            {
-                
-                player.mCurrentState = State.Idle;
+            { 
+                player.mCurrentState = State.Idle;  
                 directionManager.directionTarget.currState = TargetState.Failure;
                 directionManager.Reset(true);  //Removed direction reset so that the arrow goes till the end.
             }
+           
         }
 
         private void ReplayPressed()
@@ -663,6 +697,7 @@ namespace Gloorp
             leftArrow.position.X += offset;
             rightArrow.position.X += offset;
 
+            outPut = blank;//change the font back to not show anything
             //finish line
             finishLine.position.X += offset;
         }
