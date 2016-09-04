@@ -48,6 +48,8 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Enemy\GroundEnemy.cs" />
     <Compile Include="ObjectManager.cs" />
+    <Compile Include="Platforms\Platform.cs" />
+    <Compile Include="Platforms\PlatformManager.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

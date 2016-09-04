@@ -87,11 +87,11 @@ namespace Gloorp
         int randomNumber;
         //Animation badGuy;
         Texture2D floor;
-
+        PlatformManager platformManager = new PlatformManager();
 
         //Test objects
         //private Texture2D hideObject;
-        
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -116,7 +116,7 @@ namespace Gloorp
             base.Initialize();
 
             player.sprite.position = new Vector2(450, 500);
-            playerInitialPosition = player.sprite.position.Y;
+            player.initialPosition = player.sprite.position;
 
             source = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
             
@@ -156,6 +156,7 @@ namespace Gloorp
             LoadBackground();
             LoadEnemies();
             LoadObjects();
+            LoadPlatforms();
 
 
             //init destination target
@@ -188,6 +189,12 @@ namespace Gloorp
             replay.position = new Vector2(220, 100);
             victory.texture = Content.Load<Texture2D>("Images/BannerArt/VictorySprite");
             victory.position = new Vector2(240, 10);
+        }
+
+        private void LoadPlatforms()
+        {
+            Platform platform = new Platform(new Vector2(-200, 450), Content.Load<Texture2D>("Images/Platforms/platform"));
+            platformManager.AddPlatform(platform);
         }
 
         private void LoadObjects()
@@ -437,31 +444,13 @@ namespace Gloorp
 
         private void UpdateJump(KeyboardState state)
         {
-            if (player.mCurrentState == State.Walking || player.mCurrentState == State.Idle)
+            if (!player.isInAir)
             {
-                if(player.sprite.position.Y!=playerInitialPosition)
-                {
-                    player.sprite.position.Y = playerInitialPosition;
-                }
-                if (state.IsKeyDown(Keys.Space) == true)
-                {
-                    Jump();
-                }
+                player.CheckWhenPlayerIsOnGround(player, platformManager, state);
             }
-            else if (player.mCurrentState == State.Jumping)
+            else
             {
-                if (player.jumpStartPosition.Y - player.sprite.position.Y >= 100)// is it at max jump height
-                {
-                    player.mCurrentState = State.Falling;
-                }
-            }
-            else if (player.mCurrentState == State.Falling)
-            {
-                if (player.jumpStartPosition.Y <= player.sprite.position.Y)
-                {
-                    player.mCurrentState = state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.D) ? State.Walking : State.Idle;
-                    player.sprite.position.Y = player.jumpStartPosition.Y;
-                }
+                player.CheckWhenPlayerIsNotOnGround(player, platformManager, state);
             }
         }
 
@@ -480,16 +469,20 @@ namespace Gloorp
                     playerAnim = walkLeftAnim;
                 }
 
-                MoveBackground(playerSpeed);
+                if (!platformManager.CheckCollisionFromSides(state, player))
+                {
+                    MoveBackground(playerSpeed);
 
-                enemyManager.PlayerMoved(playerSpeed);
-                objectManager.PlayerMoved(playerSpeed);
-                keyA.position.X += playerSpeed;
-                keyD.position.X += playerSpeed;
-                leftArrow.position.X += playerSpeed;
-                rightArrow.position.X += playerSpeed;
-                finishLine.position.X += playerSpeed;
-                badGuy.Position = new Vector2(badGuy.Position.X+5,badGuy.Position.Y);
+                    enemyManager.PlayerMoved(playerSpeed);
+                    objectManager.PlayerMoved(playerSpeed);
+                    platformManager.PlayerMoved(playerSpeed);
+                    keyA.position.X += playerSpeed;
+                    keyD.position.X += playerSpeed;
+                    leftArrow.position.X += playerSpeed;
+                    rightArrow.position.X += playerSpeed;
+                    finishLine.position.X += playerSpeed;
+                    badGuy.Position = new Vector2(badGuy.Position.X + 5, badGuy.Position.Y);
+                }
             }
             else if (state.IsKeyDown(Keys.D))//move right
             {
@@ -502,17 +495,19 @@ namespace Gloorp
                     player.mCurrentState = State.Walking;
                     playerAnim = walkRightAnim;
                 }
-
-                MoveBackground(-playerSpeed);
-
-                enemyManager.PlayerMoved(-playerSpeed);
-                objectManager.PlayerMoved(-playerSpeed);
-                keyA.position.X -= playerSpeed;
-                keyD.position.X -= playerSpeed;
-                leftArrow.position.X -= playerSpeed;
-                rightArrow.position.X -= playerSpeed;
-                finishLine.position.X -= playerSpeed;
-                badGuy.Position = new Vector2(badGuy.Position.X - playerSpeed, badGuy.Position.Y);
+                if (!platformManager.CheckCollisionFromSides(state, player))
+                {
+                    MoveBackground(-playerSpeed);
+                    platformManager.PlayerMoved(-playerSpeed);
+                    enemyManager.PlayerMoved(-playerSpeed);
+                    objectManager.PlayerMoved(-playerSpeed);
+                    keyA.position.X -= playerSpeed;
+                    keyD.position.X -= playerSpeed;
+                    leftArrow.position.X -= playerSpeed;
+                    rightArrow.position.X -= playerSpeed;
+                    finishLine.position.X -= playerSpeed;
+                    badGuy.Position = new Vector2(badGuy.Position.X - playerSpeed, badGuy.Position.Y);
+                }
             }
 
             if (player.mCurrentState == State.Jumping)//jumping. i.e. moving upward
@@ -536,17 +531,6 @@ namespace Gloorp
             {
                 playerAnim = idleAnimation;
             }
-        }
-
-        private void Jump()
-        {
-            if (player.mCurrentState != State.Jumping)
-            {
-                player.mCurrentState = State.Jumping;
-                
-                player.jumpStartPosition = player.sprite.position;
-            }
-
         }
 
         private void MoveBackground(float amount)
@@ -583,7 +567,7 @@ namespace Gloorp
             mBackgroundFour.Draw(spriteBatch);
             mBackgroundFive.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
-
+            platformManager.Draw(spriteBatch);
             //draw badguy
             //badGuy.Draw(spriteBatch);
 
