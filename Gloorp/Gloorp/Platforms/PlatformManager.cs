@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,8 +71,9 @@ namespace Gloorp
                 {
                     if (player.getRect().Intersects(e.getBoundingBox()))
                     {
-                        if (player.getRect().Left <= e.getBoundingBox().Right && !(player.getRect().Bottom == e.getBoundingBox().Top + 10))
-                            return true;
+                        if (player.getRect().Left <= e.getBoundingBox().Right && !(player.getRect().Bottom == e.getBoundingBox().Top + 10) && (player.sprite.position.X >= e.sprite.position.X))
+                        {
+                            return true; }
                     }
                 }
                 return false;
@@ -82,12 +84,28 @@ namespace Gloorp
                 {
                     if (player.getRect().Intersects(e.getBoundingBox()))
                     {
-                        if (player.getRect().Right >= e.getBoundingBox().Left && !(player.getRect().Bottom == e.getBoundingBox().Top + 10))
-                            return true;
+                        if ((player.getRect().Right >= e.getBoundingBox().Left && !(player.getRect().Bottom == e.getBoundingBox().Top + 10)) && (player.sprite.position.X<=e.sprite.position.X))
+                        {
+                            return true; }
                     }
                 }
                 return false;
             }
         }
-    }
+        internal bool CheckCollisionFromBottom(Player player)
+        {
+            foreach (Platform e in platforms)
+            {
+                if (player.getRect().Intersects(e.getBoundingBox()))
+                {
+                    if(player.getRect().Top <= e.getBoundingBox().Bottom && player.mCurrentState==State.Jumping)
+                    {
+                        Debug.WriteLine("Test");
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+   }
 }

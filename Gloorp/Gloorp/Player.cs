@@ -71,6 +71,10 @@ namespace Gloorp
         {
             if (player.mCurrentState == State.Jumping)
             {
+                //if(platformManager.CheckCollisionFromBottom(player))
+                //{
+                //    player.mCurrentState = State.Falling;
+                //}
 
                 if (player.jumpStartPosition.Y - player.sprite.position.Y >= 100)// is it at max jump height
                 {
