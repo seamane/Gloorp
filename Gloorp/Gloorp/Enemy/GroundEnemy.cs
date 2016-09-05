@@ -6,7 +6,7 @@ namespace Gloorp
 {
     class GroundEnemy : Enemy
     {
-        const float visionDepth = 75;
+        const float visionDepth = 30;
         public GroundEnemy(Vector2 anchor) : base(anchor)
         {
             speed = 3;

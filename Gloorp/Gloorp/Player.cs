@@ -84,7 +84,7 @@ namespace Gloorp
             }
             else if (player.mCurrentState == State.Falling)
             {
-                if (!platformManager.CheckPlatformPlayerCollision(player) && (player.jumpStartPosition.Y <= player.sprite.position.Y))
+                if (!platformManager.CheckPlatformPlayerCollision(player) && (player.initialPosition.Y <= player.sprite.position.Y))
                 {
                     player.mCurrentState = state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.D) ? State.Walking : State.Idle;
                     player.jumpStartPosition = player.sprite.position;

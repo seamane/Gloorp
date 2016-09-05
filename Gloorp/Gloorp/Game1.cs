@@ -254,7 +254,7 @@ namespace Gloorp
             enemyManager.AddEnemy(enemy);
 
             
-            enemy = new AirEnemy(new Vector2(1250, 200));
+            enemy = new AirEnemy(new Vector2(1250, 250));
             enemy.sprite.texture = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
             enemyManager.AddEnemy(enemy);
         }
@@ -387,7 +387,7 @@ namespace Gloorp
                     || currKeyboardState.IsKeyDown(Keys.Right) && !prevKeyboardState.IsKeyDown(Keys.Right)
                     || currKeyboardState.IsKeyDown(Keys.Left) && !prevKeyboardState.IsKeyDown(Keys.Left))
                 {
-                    player.mCurrentState = State.Idle;
+                     player.mCurrentState = player.mCurrentState == State.Disguised ? State.Idle : player.mCurrentState;
                     directionManager.directionTarget.currState = TargetState.Failure;
                     directionManager.Reset(true); //Removed direction reset so that the arrow goes till the end.
                 }
@@ -660,7 +660,7 @@ namespace Gloorp
             }
             else if(directionManager.collisionState == CollisionState.Late)
             {
-                player.mCurrentState = State.Idle;
+                player.mCurrentState = player.mCurrentState == State.Disguised ? State.Idle : player.mCurrentState;
                 directionManager.directionTarget.currState = TargetState.Failure;
                 directionManager.Reset(true);
             }
@@ -669,7 +669,7 @@ namespace Gloorp
                 || newState.IsKeyDown(Keys.Right) && !prevKeyboardState.IsKeyDown(Keys.Right)
                 || newState.IsKeyDown(Keys.Left) && !prevKeyboardState.IsKeyDown(Keys.Left))
             { 
-                player.mCurrentState = State.Idle;  
+                player.mCurrentState = player.mCurrentState == State.Disguised ? State.Idle : player.mCurrentState;  
                 directionManager.directionTarget.currState = TargetState.Failure;
                 directionManager.Reset(true);  //Removed direction reset so that the arrow goes till the end.
             }
