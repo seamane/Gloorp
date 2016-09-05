@@ -48,8 +48,8 @@ namespace Gloorp
         Sprite finishLine = new Sprite();
         SpriteFont gameFont;
         string outPut;
-        string replayText = "Replay?:\n 'Y' or 'N'";
-        string victoryText = "VICTORY\n Replay?: 'Y' or 'N'";
+        string replayText = "Replay?:\n'Y' or 'N'";
+        string victoryText = "VICTORY\nReplay?:\n 'Y' or 'N'";
         string blank = "";
         
 
@@ -636,7 +636,7 @@ namespace Gloorp
                 //spriteBatch.Draw(victory.texture, victory.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.35f, SpriteEffects.None, 0.0f);
                 outPut = victoryText;//change the text so it says Victory
             }
-            spriteBatch.DrawString(gameFont, outPut, new Vector2(400, 200), Color.Black);//draws the font to the screen. its the top layer
+            spriteBatch.DrawString(gameFont, outPut, new Vector2(400, 200), Color.White);//draws the font to the screen. its the top layer
             spriteBatch.End();
         }
         
