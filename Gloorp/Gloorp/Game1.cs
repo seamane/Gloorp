@@ -364,10 +364,9 @@ namespace Gloorp
                 return;
             }
 
-            // TODO: Add your update logic here
-
             base.Update(gameTime);
            
+            //is the player near an object he can hide behind?
             if (player.nearObject != null)
             {
                 randomNumber = directionManager.UpdateMovement();
