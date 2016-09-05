@@ -29,7 +29,14 @@ namespace Gloorp
 
         public override void Draw(SpriteBatch batch)
         {
-            base.Draw(batch);
+            if(direction == -1)
+            {
+                batch.Draw(sprite.texture, sprite.position, Color.White);
+            }
+            else
+            {
+                batch.Draw(sprite.texture, sprite.position, null, Color.White, 0.0f, new Vector2(0,0), 1.0f, SpriteEffects.FlipHorizontally, 0.0f);
+            }
         }
     }
 }

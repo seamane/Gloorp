@@ -54,8 +54,6 @@ namespace Gloorp
 
         public virtual void Draw(SpriteBatch batch)
         {
-            
-
             batch.Draw(sprite.texture, sprite.position, Color.White);
             
         }
