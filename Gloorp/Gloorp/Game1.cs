@@ -623,8 +623,8 @@ namespace Gloorp
 
             spriteBatch.Draw(keyA.texture, keyA.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
             spriteBatch.Draw(keyD.texture, keyD.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(leftArrow.texture, leftArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(rightArrow.texture, rightArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
+            //spriteBatch.Draw(leftArrow.texture, leftArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
+            //spriteBatch.Draw(rightArrow.texture, rightArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
 
             if(currState == GameState.Dead || currState == GameState.Finished)
             {
