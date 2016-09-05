@@ -180,7 +180,7 @@ namespace Gloorp
 
 
             LoadBackground();
-            LoadEnemies();
+            //LoadEnemies();
             LoadObjects();
             LoadPlatforms();
 
@@ -209,7 +209,7 @@ namespace Gloorp
 
             //finish line
             finishLine.texture = Content.Load<Texture2D>("Images/Player/rectangleSprite");
-            finishLine.position = new Vector2(1850, 450);
+            finishLine.position = new Vector2(6150, 450);
 
             //banner art
             replay.texture = Content.Load<Texture2D>("Images/BannerArt/replay");
@@ -224,37 +224,95 @@ namespace Gloorp
 
         private void LoadPlatforms()
         {
-            Platform platform = new Platform(new Vector2(-200, 450), Content.Load<Texture2D>("Images/Platforms/platform"));
+            //xLarge is 1150 wide
+            int xPos = -400;
+            int gapSize = 90;
+            Platform platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
             platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width;
+            platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 338), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 338), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
         }
 
         private void LoadObjects()
         {
-            Sprite squareObject = new Sprite();
-            Sprite figureObject = new Sprite();
+            Texture2D pineapple = Content.Load<Texture2D>("Images/HideObjects/pineApple_137");
+            Texture2D figure = Content.Load<Texture2D>("Images/HideObjects/Figure_150");
 
-            figureObject.position = new Vector2(1150, 365);
-            squareObject.position = new Vector2(700, 365);
+            Sprite hideObject = new Sprite();
+            hideObject.position = new Vector2(700, 365);
+            hideObject.texture = pineapple;
+            objectManager.AddObject(hideObject);
 
-            figureObject.texture = Content.Load<Texture2D>("Images/HideObjects/Figure_150");
-            squareObject.texture=Content.Load<Texture2D>("Images/HideObjects/pineApple_137");
-           
-            objectManager.AddObject(squareObject);
-            objectManager.AddObject(figureObject);
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(1050, 350);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
 
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(2100, 190);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(2900, 275);
+            hideObject.texture = pineapple;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(4485, 260);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(5200, 350);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(5900, 365);
+            hideObject.texture = pineapple;
+            objectManager.AddObject(hideObject);
         }
 
         private void LoadEnemies()
         {
-            
-            Enemy enemy = new GroundEnemy(new Vector2(950, 440));
+            Enemy enemy = new GroundEnemy(new Vector2(1100, 440));
           
             //enemyManager.Draw(spriteBatch);
             enemy.sprite.texture = Content.Load<Texture2D>("Images/Enemies/Ground_Enemy");
             enemyManager.AddEnemy(enemy);
 
             
-            enemy = new AirEnemy(new Vector2(1250, 250));
+            enemy = new AirEnemy(new Vector2(3250, 250));
             enemy.sprite.texture = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
             enemyManager.AddEnemy(enemy);
         }
@@ -432,7 +490,7 @@ namespace Gloorp
             }
 
             // check if enemy can see player
-            if (enemyManager.CanEnemySeePlayer())
+            if (enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > player.initialPosition.Y + 100)
             {
                 //then game over
                 player.mCurrentState = State.Found;
@@ -613,7 +671,7 @@ namespace Gloorp
            
             playerAnim.Draw(spriteBatch);
             //Draws the floor
-            spriteBatch.Draw(floor, new Rectangle(0, 497, 1000, 600), Color.DarkGray);
+            //spriteBatch.Draw(floor, new Rectangle(0, 497, 1000, 600), Color.DarkGray);
 
             if (player.nearObject!=null) {
                 directionManager.Draw(spriteBatch,player.nearObject.position.X);               
@@ -686,9 +744,13 @@ namespace Gloorp
             mBackgroundFive.position = new Vector2(mBackgroundFour.position.X + mBackgroundFour.texture.Bounds.Width, -260);
             frontBackgroundSprite = mBackgroundOne;
 
-            float offset = 1850 - finishLine.position.X;
+            float offset = 5050 - finishLine.position.X;
             objectManager.ResetObjects(offset);
             enemyManager.ResetEnemies(offset);
+            platformManager.ResetPlatforms(offset);
+
+            //reset player position
+            player.sprite.position = player.initialPosition;
 
             //load player UI for start of game
             keyA.position.X += offset;

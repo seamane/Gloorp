@@ -37,7 +37,7 @@ namespace Gloorp
         {
             if (player.mCurrentState == State.Walking || player.mCurrentState == State.Idle)
             {
-                if (!platformManager.CheckPlatformPlayerCollision(player) && player.sprite.position.Y != initialPosition.Y)
+                if (!platformManager.CheckPlatformPlayerCollision(player))// && player.sprite.position.Y > initialPosition.Y)
                 {
                     player.isInAir = true;
                     player.mCurrentState = State.Falling;
@@ -86,7 +86,7 @@ namespace Gloorp
             {
                 if (!platformManager.CheckPlatformPlayerCollision(player) && (player.initialPosition.Y <= player.sprite.position.Y))
                 {
-                    player.mCurrentState = state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.D) ? State.Walking : State.Idle;
+                    //player.mCurrentState = state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.D) ? State.Walking : State.Idle;
                     player.jumpStartPosition = player.sprite.position;
                     player.isInAir = false;
                 }

@@ -44,8 +44,10 @@ namespace Gloorp
             foreach (Platform e in platforms)
             {
                 if (player.getRect().Intersects(e.getBoundingBox()))
+                    //&& player.sprite.position.X > e.getBoundingBox().Left
+                    //&& player.sprite.position.X < e.getBoundingBox().Right)
                 {
-                    if (player.getRect().Bottom == e.getBoundingBox().Top + 10)
+                    if (player.getRect().Bottom == e.getBoundingBox().Top + 2)
                     {
                         player.isInAir = false;
                         player.mCurrentState = State.Idle;
@@ -71,9 +73,12 @@ namespace Gloorp
                 {
                     if (player.getRect().Intersects(e.getBoundingBox()))
                     {
-                        if (player.getRect().Left <= e.getBoundingBox().Right && !(player.getRect().Bottom == e.getBoundingBox().Top + 10) && (player.sprite.position.X >= e.sprite.position.X))
+                        if (player.getRect().Left <= e.getBoundingBox().Right 
+                            && !(player.getRect().Bottom == e.getBoundingBox().Top + 2) 
+                            && (player.sprite.position.X >= e.sprite.position.X))
                         {
-                            return true; }
+                            return true;
+                        }
                     }
                 }
                 return false;
@@ -84,9 +89,12 @@ namespace Gloorp
                 {
                     if (player.getRect().Intersects(e.getBoundingBox()))
                     {
-                        if ((player.getRect().Right >= e.getBoundingBox().Left && !(player.getRect().Bottom == e.getBoundingBox().Top + 10)) && (player.sprite.position.X<=e.sprite.position.X))
+                        if ((player.getRect().Right >= e.getBoundingBox().Left 
+                            && !(player.getRect().Bottom == e.getBoundingBox().Top + 2)) 
+                            && (player.sprite.position.X<=e.sprite.position.X))
                         {
-                            return true; }
+                            return true;
+                        }
                     }
                 }
                 return false;
@@ -107,5 +115,12 @@ namespace Gloorp
             }
             return false;
         }
-   }
+        public void ResetPlatforms(float offset)
+        {
+            foreach (Platform p in platforms)
+            {
+                p.Reset(offset);
+            }
+        }
+    }
 }

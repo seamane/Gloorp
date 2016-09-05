@@ -31,5 +31,10 @@ namespace Gloorp
         {
             { return new Rectangle((int)sprite.position.X, (int)sprite.position.Y, sprite.texture.Width, sprite.texture.Height); }
         }
+
+        public void Reset(float offset)
+        {
+            sprite.position.X += offset;
+        }
     }
 }
