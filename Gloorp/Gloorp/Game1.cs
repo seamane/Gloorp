@@ -42,7 +42,8 @@ namespace Gloorp
         Sprite rightArrow = new Sprite();
         Sprite whiteTriggerd = new Sprite();
 
-       
+        //broken cage
+        Sprite cage = new Sprite();
 
         //finish line
         Sprite finishLine = new Sprite();
@@ -58,22 +59,12 @@ namespace Gloorp
         Sprite victory = new Sprite();
         Sprite replay = new Sprite();
         
-        float playerInitialPosition;
-        
         Animation playerAnim;//holds the current animation for the player
         Animation walkLeftAnim,walkRightAnim,jumpingAnim,fallingAnim,idleAnimation,fallLeftAnim,jumpLeftAnim,pineAppleAnim,figureAnim;
 
         Animation testObject;
         Animation badGuy;
-
-        Rectangle source;
-
-        // the elapsed amount of time the frame has been shown for
-        float time;
-        // duration of time to show each frame
-        float frameTime = 0.25f;
-        // an index of the current frame being shown
-        int frameIndex;
+        
         // total number of frames in our spritesheet
         const int totalFrames = 4;
         // define the size of our animation frame
@@ -133,17 +124,10 @@ namespace Gloorp
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
 
             player.sprite.position = new Vector2(450, 500);
             player.initialPosition = player.sprite.position;
-
-       
-
-            source = new Rectangle(frameIndex * frameWidth, 0, frameWidth, frameHeight);
-            
         }
 
         /// <summary>
@@ -156,7 +140,6 @@ namespace Gloorp
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             //Animations
-            
             walkLeftAnim = new Animation(Content, "Images/Player/blob_LeftWalk", 200f, 3, true);
             walkRightAnim = new Animation(Content, "Images/Player/blob_RightWalk", 200f, 3, true);
             jumpingAnim = new Animation(Content, "Images/Player/blob_Jump", 200f, 5, false);
@@ -171,19 +154,16 @@ namespace Gloorp
             
             pineAppleAnim = new Animation(Content, "Images/HideObjects/Blob_PineAppleAnim_137", 100, 7, false);
             figureAnim = new Animation(Content, "Images/HideObjects/Blob_figureAnim_150", 100, 8, false);
-
             
             testObject = pineAppleAnim;
 
             LoadDirectionSprites();
             //playerAnimator = new Animation(player.sprite.texture, frameWidth, totalFrames,frameTime);
-
-
+            
             LoadBackground();
             LoadEnemies();
             LoadObjects();
             LoadPlatforms();
-
 
             //init destination target
             directionManager.directionTarget.neutralTexture = Content.Load<Texture2D>("DirectionSprites/iconWhite");
@@ -217,9 +197,12 @@ namespace Gloorp
             victory.texture = Content.Load<Texture2D>("Images/BannerArt/VictorySprite");
             victory.position = new Vector2(240, 10);
 
+            //cage
+            cage.texture = Content.Load<Texture2D>("Images/BrokenCage");
+            cage.position = new Vector2(0, 260);
+
             gameFont = Content.Load<SpriteFont>("Fonts/GameFont");
             outPut = blank;
-            
         }
 
         private void LoadPlatforms()
@@ -596,6 +579,7 @@ namespace Gloorp
                     rightArrow.position.X += playerSpeed;
                     finishLine.position.X += playerSpeed;
                     badGuy.Position = new Vector2(badGuy.Position.X + 5, badGuy.Position.Y);
+                    cage.position.X += playerSpeed;
                 }
             }
             else if (state.IsKeyDown(Keys.D))//move right
@@ -621,6 +605,7 @@ namespace Gloorp
                     rightArrow.position.X -= playerSpeed;
                     finishLine.position.X -= playerSpeed;
                     badGuy.Position = new Vector2(badGuy.Position.X - playerSpeed, badGuy.Position.Y);
+                    cage.position.X -= playerSpeed;
                 }
             }
 
@@ -665,14 +650,9 @@ namespace Gloorp
         {
             GraphicsDevice.Clear(Color.Gray);
 
-            // TODO: Add your drawing code here
-
             base.Draw(gameTime);
 
-
             spriteBatch.Begin();
-
-            
 
             //draw background first
             mBackgroundOne.Draw(spriteBatch);
@@ -692,14 +672,14 @@ namespace Gloorp
 
             //draw "blob"
             Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
-           
             playerAnim.Draw(spriteBatch);
-            //Draws the floor
-            //spriteBatch.Draw(floor, new Rectangle(0, 497, 1000, 600), Color.DarkGray);
 
-            if (player.nearObject!=null) {
-                directionManager.Draw(spriteBatch,player.nearObject.position.X);               
-                //constantCircle.Draw(spriteBatch);
+            //draw cage
+            spriteBatch.Draw(cage.texture, cage.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.2f, SpriteEffects.None, 0.0f);
+
+            if (player.nearObject!=null)
+            {
+                directionManager.Draw(spriteBatch,player.nearObject.position.X);     
             }
 
             spriteBatch.Draw(keyA.texture, keyA.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
@@ -782,6 +762,7 @@ namespace Gloorp
             keyD.position.X += offset;
             leftArrow.position.X += offset;
             rightArrow.position.X += offset;
+            cage.position.X += offset;
 
             outPut = blank;//change the font back to not show anything
             //finish line
