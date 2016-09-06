@@ -336,7 +336,7 @@ namespace Gloorp
             enemy.sprite.texture = air;
             enemyManager.AddEnemy(enemy);
 
-            enemy = new GroundEnemy(new Vector2(5800, 440), 2.5f, 250);
+            enemy = new GroundEnemy(new Vector2(5800, 440), 1.5f, 250);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
         }
@@ -775,6 +775,7 @@ namespace Gloorp
 
             //reset player position
             player.sprite.position = player.initialPosition;
+            player.isInAir = false;
 
             //load player UI for start of game
             keyA.position.X += offset;
