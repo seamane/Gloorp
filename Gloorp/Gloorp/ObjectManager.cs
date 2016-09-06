@@ -12,7 +12,7 @@ namespace Gloorp
 
         public ObjectManager()
         {
-
+            
         }
 
         public void AddObject(Sprite sprite)

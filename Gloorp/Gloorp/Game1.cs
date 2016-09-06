@@ -199,7 +199,7 @@ namespace Gloorp
 
             //cage
             cage.texture = Content.Load<Texture2D>("Images/BrokenCage");
-            cage.position = new Vector2(0, 260);
+            cage.position = new Vector2(0, 270);
 
             gameFont = Content.Load<SpriteFont>("Fonts/GameFont");
             outPut = blank;
@@ -291,7 +291,7 @@ namespace Gloorp
             Texture2D ground = Content.Load<Texture2D>("Images/Enemies/Ground_Enemy");
             Texture2D air = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
 
-            Enemy enemy = new GroundEnemy(new Vector2(1100, 440), 2.5f, 200);
+            Enemy enemy = new GroundEnemy(new Vector2(1100, 440), 2.0f, 200);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
             
