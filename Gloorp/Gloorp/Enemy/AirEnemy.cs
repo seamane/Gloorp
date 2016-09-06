@@ -11,10 +11,10 @@ namespace Gloorp
         Vector2 lookAt = new Vector2(0, 1);//direction the enemy is looking
 
 
-        public AirEnemy(Vector2 anchor) : base(anchor)
+        public AirEnemy(Vector2 anchor, float speed, int radius) : base(anchor)
         {
-            speed = 2;
-            patrollingRadius = 400;
+            this.speed = speed;
+            patrollingRadius = radius;
             
         }
 

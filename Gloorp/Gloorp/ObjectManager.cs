@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace Gloorp
 {
@@ -53,7 +54,7 @@ namespace Gloorp
             foreach (var o in objects)
             {
                 var distance = Math.Abs(player.sprite.position.X - o.position.X);
-                
+              
                 if (player.getRect().Intersects(o.getRect()))
                 {
                     player.nearObject = o;

@@ -180,7 +180,7 @@ namespace Gloorp
 
 
             LoadBackground();
-            //LoadEnemies();
+            LoadEnemies();
             LoadObjects();
             LoadPlatforms();
 
@@ -305,15 +305,39 @@ namespace Gloorp
 
         private void LoadEnemies()
         {
-            Enemy enemy = new GroundEnemy(new Vector2(1100, 440));
-          
-            //enemyManager.Draw(spriteBatch);
-            enemy.sprite.texture = Content.Load<Texture2D>("Images/Enemies/Ground_Enemy");
+            Texture2D ground = Content.Load<Texture2D>("Images/Enemies/Ground_Enemy");
+            Texture2D air = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
+
+            Enemy enemy = new GroundEnemy(new Vector2(1100, 440), 2.5f, 200);
+            enemy.sprite.texture = ground;
+            enemyManager.AddEnemy(enemy);
+            
+            enemy = new AirEnemy(new Vector2(1150, 250), 2.0f, 350);
+            enemy.sprite.texture = air;
             enemyManager.AddEnemy(enemy);
 
-            
-            enemy = new AirEnemy(new Vector2(3250, 250));
-            enemy.sprite.texture = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
+            enemy = new GroundEnemy(new Vector2(2140, 280), 2.5f, 250);
+            enemy.sprite.texture = ground;
+            enemyManager.AddEnemy(enemy);
+
+            enemy = new AirEnemy(new Vector2(2800, 200), 2.0f, 250);
+            enemy.sprite.texture = air;
+            enemyManager.AddEnemy(enemy);
+
+            enemy = new AirEnemy(new Vector2(4400, 200), 2.0f, 250);
+            enemy.sprite.texture = air;
+            enemyManager.AddEnemy(enemy);
+
+            enemy = new GroundEnemy(new Vector2(5300, 440), 2.5f, 250);
+            enemy.sprite.texture = ground;
+            enemyManager.AddEnemy(enemy);
+
+            enemy = new AirEnemy(new Vector2(5600, 300), 2.0f, 500);
+            enemy.sprite.texture = air;
+            enemyManager.AddEnemy(enemy);
+
+            enemy = new GroundEnemy(new Vector2(5800, 440), 2.5f, 250);
+            enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
         }
 
@@ -744,7 +768,7 @@ namespace Gloorp
             mBackgroundFive.position = new Vector2(mBackgroundFour.position.X + mBackgroundFour.texture.Bounds.Width, -260);
             frontBackgroundSprite = mBackgroundOne;
 
-            float offset = 5050 - finishLine.position.X;
+            float offset = 6150 - finishLine.position.X;
             objectManager.ResetObjects(offset);
             enemyManager.ResetEnemies(offset);
             platformManager.ResetPlatforms(offset);

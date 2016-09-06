@@ -25,7 +25,7 @@ namespace Gloorp
             position.X += amount;
         }
         public Rectangle getRect()
-        { return new Rectangle((int)position.X, (int)position.X, texture.Width, texture.Height); }
+        { return new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height); }
 
         public String getName()
         { return texture.ToString(); }

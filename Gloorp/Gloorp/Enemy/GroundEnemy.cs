@@ -7,10 +7,10 @@ namespace Gloorp
     class GroundEnemy : Enemy
     {
         const float visionDepth = 30;
-        public GroundEnemy(Vector2 anchor) : base(anchor)
+        public GroundEnemy(Vector2 anchor, float speed, int radius) : base(anchor)
         {
-            speed = 2.5f;
-            patrollingRadius = 200;
+            this.speed = speed;
+            patrollingRadius = radius;
         }
 
         public override bool CanSeePlayer(Player player)
