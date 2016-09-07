@@ -52,6 +52,7 @@ namespace Gloorp
         string replayText = "Replay?:\n'Y' or 'N'";
         string victoryText = "VICTORY\nReplay?:\n 'Y' or 'N'";
         string blank = "";
+        bool firstOne=true;
         
 
         //Banner sprites
@@ -431,11 +432,8 @@ namespace Gloorp
 
             base.Update(gameTime);
            
-            //is the player near an object he can hide behind?
-            if (player.nearObject != null)
-            {
-                randomNumber = directionManager.UpdateMovement();
-            }
+            
+
            
             // checked for collision
             // check if in range of object; if true, display UI in DirectionSpriteManager
@@ -461,10 +459,15 @@ namespace Gloorp
             if(!objectManager.CheckPlayerCollisionWithObjects(player))
             {
                 directionManager.directionTarget.currState = TargetState.Neutral;
-                directionManager.Reset(true);
+                directionManager.ResetToOriginalPosition();
+            }
+            
+            //is the player near an object he can hide behind?
+            if (player.nearObject != null)
+            {
+                randomNumber = directionManager.UpdateMovement();                 
             }
 
-            
 
             playerAnim.PlayAnim(gameTime);
 
@@ -500,8 +503,8 @@ namespace Gloorp
             if (enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > player.initialPosition.Y + 100)
             {
                 //then game over
-                player.mCurrentState = State.Found;
-                currState = GameState.Dead;
+                //player.mCurrentState = State.Found;
+                //currState = GameState.Dead;
             }
             
             prevKeyboardState = currKeyboardState;
@@ -679,7 +682,7 @@ namespace Gloorp
 
             if (player.nearObject!=null)
             {
-                directionManager.Draw(spriteBatch,player.nearObject.position.X);     
+                directionManager.Draw(spriteBatch,player.nearObject);     
             }
 
             spriteBatch.Draw(keyA.texture, keyA.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);

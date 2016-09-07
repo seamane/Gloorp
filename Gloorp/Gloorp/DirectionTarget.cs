@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,11 @@ namespace Gloorp
         public Vector2 position;
         public TargetState currState = TargetState.Neutral;
 
-        public void Draw(SpriteBatch batch, float nearObjectX)
-        {
-            Vector2 pos = new Vector2(nearObjectX, position.Y);
+        public void Draw(SpriteBatch batch, Sprite nearObject)
+        {           
+            Vector2 pos = new Vector2(nearObject.position.X+((nearObject.texture.Width/2)-32), nearObject.position.Y- 60);
+            position = pos;
+            Debug.WriteLine(position+" in draw");
             switch (currState)
             {
                 case TargetState.Failure:

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -45,9 +46,9 @@ namespace Gloorp
             return directionNumber;
         }
 
-        public void Draw(SpriteBatch batch, float nearObjectX)
+        public void Draw(SpriteBatch batch, Sprite nearObject)
         {
-            directionTarget.Draw(batch,nearObjectX);
+            directionTarget.Draw(batch,nearObject);
 
             bool tilesAppear = false;
             foreach (DirectionSprite e in directions)
@@ -55,7 +56,7 @@ namespace Gloorp
                 if (e.appearanceStatus)
                 {
                     
-                    e.Draw(batch, nearObjectX);
+                    e.Draw(batch, nearObject);
                     tilesAppear = true;
                     break;
                 }
@@ -112,6 +113,14 @@ namespace Gloorp
             {
                 dir.IncrementSpeed();
             }   
+        }
+
+        internal void ResetToOriginalPosition()
+        {
+            foreach (DirectionSprite e in directions)
+            {
+                e.ResetToOriginalPosition(0, directionTarget);
+            }
         }
     }
 }

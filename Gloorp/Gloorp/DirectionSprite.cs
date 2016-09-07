@@ -12,6 +12,7 @@ namespace Gloorp
     class DirectionSprite
     {
         public Sprite sprite;
+        public Sprite nearObject;
         private Vector2 anchor;
         float speed;
         public int directionNumber;
@@ -47,15 +48,15 @@ namespace Gloorp
             }
             sprite.position.Y += 1 * speed;
         }
-        public void Draw(SpriteBatch batch, float nearObjectX)
+        public void Draw(SpriteBatch batch, Sprite nearObject)
         {
-            batch.Draw(sprite.texture, new Vector2(nearObjectX,sprite.position.Y), Color.White);
+            batch.Draw(sprite.texture, new Vector2(nearObject.position.X + ((nearObject.texture.Width / 2) - 32), sprite.position.Y), Color.White);
         }
         public void Reset(bool resetSpeed)
         {
             sprite.position = anchor;
             appearanceStatus = false;
-            if(resetSpeed)
+            if(resetSpeed||speed==0)
             {
                 speed = initialSpeed;
             }
@@ -64,6 +65,14 @@ namespace Gloorp
         public void IncrementSpeed()
         {
             speed *= 1.05f;
+        }
+
+        internal void ResetToOriginalPosition(int v,DirectionTarget directionTarget)
+        {
+            Debug.WriteLine(sprite.position+" "+ directionTarget.position);
+            sprite.position = directionTarget.position;
+            appearanceStatus = true;          
+            speed = v;
         }
     }
 }
