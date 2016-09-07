@@ -11,11 +11,11 @@ namespace Gloorp
         Vector2 lookAt = new Vector2(0, 1);//direction the enemy is looking
 
 
-        public AirEnemy(Vector2 anchor, float speed, int radius) : base(anchor)
+        public AirEnemy(Vector2 anchor, float speed, int radius, int direction) : base(anchor)
         {
             this.speed = speed;
             patrollingRadius = radius;
-            
+            this.direction = direction;
         }
 
         public override bool CanSeePlayer(Player player)

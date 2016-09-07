@@ -162,7 +162,7 @@ namespace Gloorp
             //playerAnimator = new Animation(player.sprite.texture, frameWidth, totalFrames,frameTime);
             
             LoadBackground();
-            //LoadEnemies();
+            LoadEnemies();
             LoadObjects();
             LoadPlatforms();
 
@@ -258,37 +258,50 @@ namespace Gloorp
             hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
 
-
-
             hideObject = new Sprite();
             hideObject.position = new Vector2(1250, 149);
             hideObject.texture = figure;
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(1950, 69);
+            hideObject.position = new Vector2(1940, 69);
             hideObject.texture = figure;
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(2700, 322);
+            hideObject.position = new Vector2(2710, 322);
             hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(3185, 309);
+            hideObject.position = new Vector2(3165, 309);
             hideObject.texture = figure;
             objectManager.AddObject(hideObject);
 
-            //hideObject = new Sprite();
-            //hideObject.position = new Vector2(5200, 350);
-            //hideObject.texture = figure;
-            //objectManager.AddObject(hideObject);
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(3850, 322);
+            hideObject.texture = pineapple;
+            objectManager.AddObject(hideObject);
 
-            //hideObject = new Sprite();
-            //hideObject.position = new Vector2(5900, 365);
-            //hideObject.texture = pineapple;
-            //objectManager.AddObject(hideObject);
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(4200, 309);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(4700, 322);
+            hideObject.texture = pineapple;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(4200, 82);
+            hideObject.texture = pineapple;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(4630, 69);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
         }
 
         private void LoadEnemies()
@@ -296,35 +309,43 @@ namespace Gloorp
             Texture2D ground = Content.Load<Texture2D>("Images/Enemies/Ground_Enemy");
             Texture2D air = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
 
-            Enemy enemy = new GroundEnemy(new Vector2(1100, 440), 2.0f, 200);
-            enemy.sprite.texture = ground;
-            enemyManager.AddEnemy(enemy);
+            Enemy enemy = new GroundEnemy(new Vector2(1280, 240), 1.5f, 250, -1);
+            //enemy.sprite.texture = ground;
+            //enemyManager.AddEnemy(enemy);
             
-            enemy = new AirEnemy(new Vector2(1150, 250), 2.0f, 350);
+            //enemy = new AirEnemy(new Vector2(1960, 0), 2.0f, 250, 1);
+            //enemy.sprite.texture = air;
+            //enemyManager.AddEnemy(enemy);
+
+            //enemy = new GroundEnemy(new Vector2(2990, 400), 1.5f, 350, 1);
+            //enemy.sprite.texture = ground;
+            //enemyManager.AddEnemy(enemy);
+
+            //enemy = new GroundEnemy(new Vector2(2990, 400), 2.5f, 350, -1);
+            //enemy.sprite.texture = ground;
+            //enemyManager.AddEnemy(enemy);
+
+            enemy = new AirEnemy(new Vector2(4450, 240), 2.0f, 425, 1);
             enemy.sprite.texture = air;
             enemyManager.AddEnemy(enemy);
 
-            enemy = new GroundEnemy(new Vector2(2140, 280), 2.5f, 250);
+            enemy = new GroundEnemy(new Vector2(4120, 400), 1.7f, 350, 1);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
 
-            enemy = new AirEnemy(new Vector2(2800, 200), 2.0f, 250);
-            enemy.sprite.texture = air;
-            enemyManager.AddEnemy(enemy);
-
-            enemy = new AirEnemy(new Vector2(4400, 200), 2.0f, 250);
-            enemy.sprite.texture = air;
-            enemyManager.AddEnemy(enemy);
-
-            enemy = new GroundEnemy(new Vector2(5300, 440), 2.5f, 250);
+            enemy = new GroundEnemy(new Vector2(4440, 400), 2.0f, 395, -1);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
 
-            enemy = new AirEnemy(new Vector2(5600, 300), 2.0f, 500);
-            enemy.sprite.texture = air;
+            //enemy = new GroundEnemy(new Vector2(4320, 400), 0.7f, 500, -1);
+            //enemy.sprite.texture = ground;
+            //enemyManager.AddEnemy(enemy);
+
+            enemy = new GroundEnemy(new Vector2(4395, 160), 1.3f, 355, -1);
+            enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
 
-            enemy = new GroundEnemy(new Vector2(5800, 440), 1.5f, 250);
+            enemy = new GroundEnemy(new Vector2(4395, 160), 1.1f, 355, -1);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
         }

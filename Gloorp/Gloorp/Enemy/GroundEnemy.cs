@@ -18,7 +18,7 @@ namespace Gloorp
         Vector2 playerPos;
         Vector2 sourcePoint;
 
-        public GroundEnemy(Vector2 anchor, float speed, int radius) : base(anchor)
+        public GroundEnemy(Vector2 anchor, float speed, int radius, int direction) : base(anchor)
         {
             this.speed = speed;
             patrollingRadius = radius;
@@ -26,6 +26,7 @@ namespace Gloorp
             leftLookAt.Normalize();
             rightLookAt = new Vector2(60, 35);
             rightLookAt.Normalize();
+            this.direction = direction;
         }
 
         public override bool CanSeePlayer(Player player)
