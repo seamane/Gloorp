@@ -16,7 +16,7 @@ namespace Gloorp
         float speed;
         public int directionNumber;
         public bool appearanceStatus=false;
-        const float initialSpeed = 3.5f;
+        const float initialSpeed = 2.5f;
         float scale = 0f;
 
 
