@@ -75,7 +75,7 @@ namespace Gloorp
             }
 
             //Debug.WriteLine("Angle: " + (angleBetweenEnemyAndPlayer * 180 / Math.PI));
-            Debug.WriteLine("dist: " + distToPlayer);
+            //Debug.WriteLine("dist: " + distToPlayer);
 
             if (Math.Abs(angleBetweenEnemyAndPlayer) <= viewRadius && distToPlayer <= visionDepth)
             {

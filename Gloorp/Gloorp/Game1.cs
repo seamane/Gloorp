@@ -127,7 +127,7 @@ namespace Gloorp
         {
             base.Initialize();
 
-            player.sprite.position = new Vector2(450, 500);
+            player.sprite.position = new Vector2(450, 300);
             player.initialPosition = player.sprite.position;
         }
 
@@ -162,7 +162,7 @@ namespace Gloorp
             //playerAnimator = new Animation(player.sprite.texture, frameWidth, totalFrames,frameTime);
             
             LoadBackground();
-            LoadEnemies();
+            //LoadEnemies();
             LoadObjects();
             LoadPlatforms();
 
@@ -180,9 +180,9 @@ namespace Gloorp
 
             //load player UI for start of game
             keyA.texture = Content.Load<Texture2D>("DirectionSprites/A_Icon");
-            keyA.position = new Vector2(370,390);
+            keyA.position = new Vector2(370,190);
             keyD.texture = Content.Load<Texture2D>("DirectionSprites/D_Icon");
-            keyD.position = new Vector2(450, 390);
+            keyD.position = new Vector2(450, 190);
             leftArrow.texture = Content.Load<Texture2D>("DirectionSprites/left arrow");
             leftArrow.position = new Vector2(375, 350);
             rightArrow.texture = Content.Load<Texture2D>("DirectionSprites/right arrow");
@@ -200,7 +200,7 @@ namespace Gloorp
 
             //cage
             cage.texture = Content.Load<Texture2D>("Images/BrokenCage");
-            cage.position = new Vector2(0, 270);
+            cage.position = new Vector2(0, 70);
 
             gameFont = Content.Load<SpriteFont>("Fonts/GameFont");
             outPut = blank;
@@ -208,40 +208,42 @@ namespace Gloorp
 
         private void LoadPlatforms()
         {
-            //xLarge is 1150 wide
             int xPos = -400;
             int gapSize = 90;
-            Platform platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
+
+            Platform platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width;
-            platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 338), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platform = new Platform(new Vector2(xPos, 218), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platform = new Platform(new Vector2(xPos, 458), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platform = new Platform(new Vector2(xPos, 458), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platformManager.AddPlatform(platform);
+            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 408), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platform = new Platform(new Vector2(xPos, 218), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize + gapSize;
+            platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 338), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
-            platformManager.AddPlatform(platform);
-            xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 498), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
         }
@@ -252,39 +254,41 @@ namespace Gloorp
             Texture2D figure = Content.Load<Texture2D>("Images/HideObjects/Figure_150");
 
             Sprite hideObject = new Sprite();
-            hideObject.position = new Vector2(700, 365);
+            hideObject.position = new Vector2(650, 162);
+            hideObject.texture = pineapple;
+            objectManager.AddObject(hideObject);
+
+
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(1250, 149);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(1950, 69);
+            hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(2700, 322);
             hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(1050, 350);
+            hideObject.position = new Vector2(3185, 309);
             hideObject.texture = figure;
             objectManager.AddObject(hideObject);
 
-            hideObject = new Sprite();
-            hideObject.position = new Vector2(2100, 190);
-            hideObject.texture = figure;
-            objectManager.AddObject(hideObject);
+            //hideObject = new Sprite();
+            //hideObject.position = new Vector2(5200, 350);
+            //hideObject.texture = figure;
+            //objectManager.AddObject(hideObject);
 
-            hideObject = new Sprite();
-            hideObject.position = new Vector2(2900, 275);
-            hideObject.texture = pineapple;
-            objectManager.AddObject(hideObject);
-
-            hideObject = new Sprite();
-            hideObject.position = new Vector2(4485, 260);
-            hideObject.texture = figure;
-            objectManager.AddObject(hideObject);
-
-            hideObject = new Sprite();
-            hideObject.position = new Vector2(5200, 350);
-            hideObject.texture = figure;
-            objectManager.AddObject(hideObject);
-
-            hideObject = new Sprite();
-            hideObject.position = new Vector2(5900, 365);
-            hideObject.texture = pineapple;
-            objectManager.AddObject(hideObject);
+            //hideObject = new Sprite();
+            //hideObject.position = new Vector2(5900, 365);
+            //hideObject.texture = pineapple;
+            //objectManager.AddObject(hideObject);
         }
 
         private void LoadEnemies()
@@ -500,7 +504,7 @@ namespace Gloorp
             }
 
             // check if enemy can see player
-            if (enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > player.initialPosition.Y + 100)
+            if (enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > graphics.PreferredBackBufferHeight + 100)
             {
                 //then game over
                 //player.mCurrentState = State.Found;
