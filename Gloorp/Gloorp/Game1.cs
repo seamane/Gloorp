@@ -310,7 +310,7 @@ namespace Gloorp
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(5650, 370);
+            hideObject.position = new Vector2(5650, 322);
             hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
         }
