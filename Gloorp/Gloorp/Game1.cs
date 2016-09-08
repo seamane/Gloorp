@@ -484,15 +484,20 @@ namespace Gloorp
             if(!objectManager.CheckPlayerCollisionWithObjects(player))
             {
                 directionManager.directionTarget.currState = TargetState.Neutral;
-                directionManager.ResetToOriginalPosition();
             }
-            
+
             //is the player near an object he can hide behind?
             if (player.nearObject != null)
             {
-                randomNumber = directionManager.UpdateMovement();                 
+                if (firstOne)
+                {
+                    directionManager.ResetToOriginalPosition(player.nearObject);
+                    firstOne = false;
+                }
+                randomNumber = directionManager.UpdateMovement();
             }
-
+            else
+                firstOne = true;
 
             playerAnim.PlayAnim(gameTime);
 

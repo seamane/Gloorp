@@ -67,10 +67,10 @@ namespace Gloorp
             speed *= 1.05f;
         }
 
-        internal void ResetToOriginalPosition(int v,DirectionTarget directionTarget)
+        internal void ResetToOriginalPosition(int v,DirectionTarget directionTarget,Sprite nearObject)
         {
-            Debug.WriteLine(sprite.position+" "+ directionTarget.position);
-            sprite.position = directionTarget.position;
+            Vector2 pos = new Vector2(nearObject.position.X + ((nearObject.texture.Width / 2) - 32), nearObject.position.Y - 65);
+            sprite.position = pos;
             appearanceStatus = true;          
             speed = v;
         }

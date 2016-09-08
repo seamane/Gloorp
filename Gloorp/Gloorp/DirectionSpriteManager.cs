@@ -115,11 +115,11 @@ namespace Gloorp
             }   
         }
 
-        internal void ResetToOriginalPosition()
+        internal void ResetToOriginalPosition(Sprite nearObject)
         {
             foreach (DirectionSprite e in directions)
             {
-                e.ResetToOriginalPosition(0, directionTarget);
+                e.ResetToOriginalPosition(0, directionTarget, nearObject);
             }
         }
     }
