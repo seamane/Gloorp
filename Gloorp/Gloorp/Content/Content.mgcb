@@ -775,18 +775,6 @@
 /processorParam:TextureFormat=Color
 /build:Images\Enemies\scientist.png
 
-#begin ../../../../../../Downloads/vision2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../../../../../../Downloads/vision2.png
-
 #begin Images\Enemies\vision.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -811,7 +799,7 @@
 /processorParam:TextureFormat=Color
 /build:Images/Enemies/vision2.png
 
-#begin DirectionSprites\spacebar.png
+#begin DirectionSprites/spacebar.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -821,17 +809,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DirectionSprites\spacebar.png
-
-#begin DirectionSprites/Spacebar2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:DirectionSprites/Spacebar2.png
+/build:DirectionSprites/spacebar.png
 

@@ -191,8 +191,8 @@ namespace Gloorp
             keyA.position = new Vector2(370,270);
             keyD.texture = Content.Load<Texture2D>("DirectionSprites/D_Icon");
             keyD.position = new Vector2(450, 270);
-            spacebar.texture = Content.Load<Texture2D>("DirectionSprites/Spacebar2");
-            spacebar.position = new Vector2(955, 270);
+            spacebar.texture = Content.Load<Texture2D>("DirectionSprites/spacebar");
+            spacebar.position = new Vector2(946, 270);
             leftArrow.texture = Content.Load<Texture2D>("DirectionSprites/left arrow");
             leftArrow.position = new Vector2(375, 350);
             rightArrow.texture = Content.Load<Texture2D>("DirectionSprites/right arrow");
@@ -742,9 +742,11 @@ namespace Gloorp
 
             //draw badguy
             //badGuy.Draw(spriteBatch);
-
+            spriteBatch.Draw(keyA.texture, keyA.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(keyD.texture, keyD.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(spacebar.texture, spacebar.position, null, Color.White, 0.0f, new Vector2(0, 0), .75f, SpriteEffects.None, 0.0f);
             objectManager.Draw(spriteBatch);
-            spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
+            //spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
 
             //draw "blob"
             Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
@@ -758,9 +760,7 @@ namespace Gloorp
                 directionManager.Draw(spriteBatch,player.nearObject);     
             }
 
-            spriteBatch.Draw(keyA.texture, keyA.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(keyD.texture, keyD.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
-            spriteBatch.Draw(spacebar.texture, spacebar.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.05f, SpriteEffects.None, 0.0f);
+            
             //spriteBatch.Draw(leftArrow.texture, leftArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
             //spriteBatch.Draw(rightArrow.texture, rightArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
 
