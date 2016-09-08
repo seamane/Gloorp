@@ -64,7 +64,7 @@ namespace Gloorp
 
         public void IncrementSpeed()
         {
-            speed *= 1.05f;
+            speed *= 1.1f;
         }
 
         internal void ResetToOriginalPosition(int v,DirectionTarget directionTarget,Sprite nearObject)

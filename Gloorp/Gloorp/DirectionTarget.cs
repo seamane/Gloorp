@@ -29,10 +29,6 @@ namespace Gloorp
         {           
             Vector2 pos = new Vector2(nearObject.position.X+((nearObject.texture.Width/2)-32), nearObject.position.Y- 60);
             position = pos;
-<<<<<<< HEAD
-            //Debug.WriteLine(position+" in draw");
-=======
->>>>>>> origin/master
             switch (currState)
             {
                 case TargetState.Failure:

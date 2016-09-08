@@ -188,11 +188,11 @@ namespace Gloorp
 
             //load player UI for start of game
             keyA.texture = Content.Load<Texture2D>("DirectionSprites/A_Icon");
-            keyA.position = new Vector2(370,190);
+            keyA.position = new Vector2(370,270);
             keyD.texture = Content.Load<Texture2D>("DirectionSprites/D_Icon");
-            keyD.position = new Vector2(450, 190);
+            keyD.position = new Vector2(450, 270);
             spacebar.texture = Content.Load<Texture2D>("DirectionSprites/Spacebar2");
-            spacebar.position = new Vector2(955, 190);
+            spacebar.position = new Vector2(955, 270);
             leftArrow.texture = Content.Load<Texture2D>("DirectionSprites/left arrow");
             leftArrow.position = new Vector2(375, 350);
             rightArrow.texture = Content.Load<Texture2D>("DirectionSprites/right arrow");
@@ -210,7 +210,7 @@ namespace Gloorp
 
             //cage
             cage.texture = Content.Load<Texture2D>("Images/BrokenCage");
-            cage.position = new Vector2(0, 70);
+            cage.position = new Vector2(0, 150);
 
             gameFont = Content.Load<SpriteFont>("Fonts/GameFont");
             outPut = blank;
@@ -221,19 +221,19 @@ namespace Gloorp
             int xPos = -400;
             int gapSize = 90;
 
-            Platform platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
+            Platform platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width;
-            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
             platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 218), Content.Load<Texture2D>("Images/BackgroundArt/mediumPlatform"));
-            platformManager.AddPlatform(platform);
-            xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
             platform = new Platform(new Vector2(xPos, 458), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
@@ -247,7 +247,7 @@ namespace Gloorp
             platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 218), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
+            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/largePlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize + gapSize;
             platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
@@ -277,17 +277,17 @@ namespace Gloorp
             Texture2D figure = Content.Load<Texture2D>("Images/HideObjects/Figure_150");
 
             Sprite hideObject = new Sprite();
-            hideObject.position = new Vector2(650, 162);
+            hideObject.position = new Vector2(650, 242);
             hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(1250, 149);
+            hideObject.position = new Vector2(1250, 229);
             hideObject.texture = figure;
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(1940, 69);
+            hideObject.position = new Vector2(1940, 149);
             hideObject.texture = figure;
             objectManager.AddObject(hideObject);
 
@@ -317,12 +317,12 @@ namespace Gloorp
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(4200, 82);
+            hideObject.position = new Vector2(4200, 162);
             hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(4630, 69);
+            hideObject.position = new Vector2(4630, 149);
             hideObject.texture = figure;
             objectManager.AddObject(hideObject);
 
@@ -337,11 +337,11 @@ namespace Gloorp
             Texture2D ground = Content.Load<Texture2D>("Images/Enemies/Ground_Enemy");
             Texture2D air = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
 
-            Enemy enemy = new GroundEnemy(new Vector2(1280, 240), 1.5f, 250, -1);
+            Enemy enemy = new GroundEnemy(new Vector2(1280, 320), 1.5f, 250, -1);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
             
-            enemy = new AirEnemy(new Vector2(1960, 0), 2.0f, 250, 1);
+            enemy = new AirEnemy(new Vector2(1960, 70), 2.0f, 250, 1);
             enemy.sprite.texture = air;
             enemyManager.AddEnemy(enemy);
 
@@ -353,7 +353,7 @@ namespace Gloorp
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
 
-            enemy = new AirEnemy(new Vector2(4450, 240), 2.0f, 425, 1);
+            enemy = new AirEnemy(new Vector2(4450, 320), 2.0f, 425, 1);
             enemy.sprite.texture = air;
             enemyManager.AddEnemy(enemy);
 
@@ -369,11 +369,11 @@ namespace Gloorp
             //enemy.sprite.texture = ground;
             //enemyManager.AddEnemy(enemy);
 
-            enemy = new GroundEnemy(new Vector2(4395, 160), 1.3f, 355, -1);
+            enemy = new GroundEnemy(new Vector2(4395, 240), 1.3f, 355, -1);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
 
-            enemy = new GroundEnemy(new Vector2(4395, 160), 1.1f, 355, -1);
+            enemy = new GroundEnemy(new Vector2(4395, 240), 1.1f, 355, -1);
             enemy.sprite.texture = ground;
             enemyManager.AddEnemy(enemy);
         }
