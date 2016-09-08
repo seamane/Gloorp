@@ -90,7 +90,7 @@ namespace Gloorp
         {
             foreach (var directionSprite in directions)
             {
-                var distance = directionSprite.sprite.position.Y - directionTarget.position.Y; //Distance should be greater than or equal to -20
+                var distance = directionSprite.sprite.position.Y - directionTarget.position.Y; //Distance should be greater than or equal to -30
                 if (distance < 18 && distance > -30)
                 {
                     collisionState = CollisionState.OK;  

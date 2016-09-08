@@ -108,7 +108,6 @@ namespace Gloorp
                 {
                     if(player.getRect().Top <= e.getBoundingBox().Bottom && player.mCurrentState==State.Jumping)
                     {
-                        Debug.WriteLine("Test");
                         return true;
                     }
                 }

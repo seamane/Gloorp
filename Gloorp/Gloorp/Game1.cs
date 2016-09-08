@@ -43,7 +43,7 @@ namespace Gloorp
         Sprite whiteTriggerd = new Sprite();
 
         //scientist
-        Scientist scientist = new Scientist(new Vector2(5000, 550));
+        Scientist scientist = new Scientist(new Vector2(5400, 550));
 
         //broken cage
         Sprite cage = new Sprite();
@@ -78,7 +78,7 @@ namespace Gloorp
         ObjectManager objectManager = new ObjectManager();
         EnemyManager enemyManager;
 
-        const float playerSpeed = 3;
+        const float playerSpeed = 10;
 
         // contains all the directions
         DirectionSpriteManager directionManager = new DirectionSpriteManager();
@@ -249,7 +249,7 @@ namespace Gloorp
             platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 515), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platform = new Platform(new Vector2(xPos, 458), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
         }
@@ -307,6 +307,11 @@ namespace Gloorp
             hideObject = new Sprite();
             hideObject.position = new Vector2(4630, 69);
             hideObject.texture = figure;
+            objectManager.AddObject(hideObject);
+
+            hideObject = new Sprite();
+            hideObject.position = new Vector2(5650, 370);
+            hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
         }
 
@@ -465,9 +470,10 @@ namespace Gloorp
            
             
             //check if player is at end of level
-            if(scientist.currState == BossState.Static && finishLine.position.X < 1000)
+            if(scientist.currState == BossState.Static && finishLine.position.X < 1500)
             {
-
+                scientist.currState = BossState.Start;
+                scientist.playerAtCheckpoint = true;
             }
            
             // checked for collision
@@ -675,6 +681,8 @@ namespace Gloorp
             {
                 playerAnim = idleAnimation;
             }
+
+            scientist.UpdateMovement();
         }
 
         private void MoveBackground(float amount)
@@ -716,7 +724,7 @@ namespace Gloorp
             //badGuy.Draw(spriteBatch);
 
             objectManager.Draw(spriteBatch);
-            //spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
+            spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
 
             //draw "blob"
             Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);

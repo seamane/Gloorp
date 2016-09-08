@@ -25,7 +25,7 @@ namespace Gloorp
         public bool playerAtCheckpoint = false;
         public bool playerWins = false;
         public int playerSequenceCount = 0;
-        private float speed = 5;
+        private float speed = 1;
 
         public BossState currState = BossState.Static;
         
@@ -37,11 +37,11 @@ namespace Gloorp
 
         public void UpdateMovement()
         {
-            if(playerAtCheckpoint)
+            //if(playerAtCheckpoint)
             {
                 if(currState == BossState.Start)
                 {
-                    if(sprite.position.Y < 0)
+                    if(sprite.position.Y > 0)
                     {
                         sprite.position.Y -= speed;
                     }
@@ -91,16 +91,17 @@ namespace Gloorp
         {
             sprite.position.X += offset;
             currState = BossState.Static;
+            playerAtCheckpoint = false;
 
         }
 
         public virtual void Draw(SpriteBatch batch)
         {
-            batch.Draw(sprite.texture, sprite.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.42f, SpriteEffects.None, 0.0f);
+            batch.Draw(sprite.texture, sprite.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.38f, SpriteEffects.None, 0.0f);
             if(currState == BossState.Scan)
             {
                 //offset from scientest is //78,153
-                batch.Draw(vision, sprite.position + visionOffset, null, Color.White, 0.0f, new Vector2(0, 0), 0.42f, SpriteEffects.None, 0.0f);
+                batch.Draw(vision, sprite.position + visionOffset, null, Color.White, 0.0f, new Vector2(0, 0), 0.38f, SpriteEffects.None, 0.0f);
             }
         }
     }
