@@ -21,7 +21,7 @@ namespace Gloorp
         private Vector2 visionOffset = new Vector2(70, 139);
         private Vector2 eye;
         private Vector2 lookAt = new Vector2(0, 1);
-        private float viewRadius = (float)Math.PI / 20.0f;
+        private float viewRadius = (float)Math.PI / 3.0f;
         public bool playerAtCheckpoint = false;
         public bool playerWins = false;
         public int playerSequenceCount = 0;
@@ -58,7 +58,7 @@ namespace Gloorp
                 }
                 else if(currState == BossState.Scan)
                 {
-                    if(playerSequenceCount >= 10)
+                    if(playerSequenceCount >= 12)
                     {
                         currState = BossState.End;
                     }
@@ -79,8 +79,12 @@ namespace Gloorp
             sprite.position.X += amount;
         }
 
-        public virtual bool CanSeePlayer(Player player)
+        public bool CanSeePlayer(Player player)
         {
+            if(currState != BossState.Scan || player.mCurrentState == State.Disguised)
+            {
+                return false;
+            }
             // player - enemy position
             Vector2 towardPlayer = player.sprite.position - eye;
             towardPlayer.Normalize();
@@ -93,12 +97,13 @@ namespace Gloorp
         public void Reset(float offset)
         {
             sprite.position.X += offset;
+            sprite.position.Y = 550;
             currState = BossState.Static;
             playerAtCheckpoint = false;
             playerSequenceCount = 0;
         }
 
-        public virtual void Draw(SpriteBatch batch)
+        public void Draw(SpriteBatch batch)
         {
             batch.Draw(sprite.texture, sprite.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.38f, SpriteEffects.None, 0.0f);
             if(currState == BossState.Scan)
