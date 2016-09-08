@@ -381,16 +381,16 @@ namespace Gloorp
         private void LoadDirectionSprites()
         {
             // Loading all the direction sprites.
-            DirectionSprite directionUp = new DirectionSprite(new Vector2(50, 50), 1);
+            DirectionSprite directionUp = new DirectionSprite(new Vector2(50, 0), 1);
             directionUp.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_up");
             directionManager.AddDirection(directionUp);
-            DirectionSprite directionDown = new DirectionSprite(new Vector2(50, 50), 2);
+            DirectionSprite directionDown = new DirectionSprite(new Vector2(50, 0), 2);
             directionDown.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_down");
             directionManager.AddDirection(directionDown);
-            DirectionSprite directionLeft = new DirectionSprite(new Vector2(50, 50), 3);
+            DirectionSprite directionLeft = new DirectionSprite(new Vector2(50, 0), 3);
             directionLeft.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_left");
             directionManager.AddDirection(directionLeft);
-            DirectionSprite directionRight = new DirectionSprite(new Vector2(50, 50), 4);
+            DirectionSprite directionRight = new DirectionSprite(new Vector2(50, 0), 4);
             directionRight.sprite.texture = Content.Load<Texture2D>("DirectionSprites/arrow_right");
             directionManager.AddDirection(directionRight);
 

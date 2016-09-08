@@ -41,7 +41,7 @@ namespace Gloorp
 
         public void UpdateMovement()
         {
-            if (Math.Abs(anchor.Y - sprite.position.Y) >= 250)
+            if (Math.Abs(anchor.Y - sprite.position.Y) >= 300)
             {
                 sprite.position = anchor;
                 appearanceStatus = false;
