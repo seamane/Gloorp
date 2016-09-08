@@ -42,6 +42,9 @@ namespace Gloorp
         Sprite rightArrow = new Sprite();
         Sprite whiteTriggerd = new Sprite();
 
+        //scientist
+        Scientist scientist = new Scientist(new Vector2(5000, 550));
+
         //broken cage
         Sprite cage = new Sprite();
 
@@ -166,6 +169,9 @@ namespace Gloorp
             LoadObjects();
             LoadPlatforms();
 
+            scientist.sprite.texture = Content.Load<Texture2D>("Images/Enemies/scientist");
+            scientist.vision = Content.Load<Texture2D>("Images/Enemies/vision");
+
             //init destination target
             directionManager.directionTarget.neutralTexture = Content.Load<Texture2D>("DirectionSprites/iconWhite");
             directionManager.directionTarget.triggerdTexture = Content.Load<Texture2D>("DirectionSprites/iconWhite_Triggerd");
@@ -243,7 +249,7 @@ namespace Gloorp
             platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 298), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platform = new Platform(new Vector2(xPos, 515), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
         }
@@ -310,20 +316,20 @@ namespace Gloorp
             Texture2D air = Content.Load<Texture2D>("Images/Enemies/flying_Enemy");
 
             Enemy enemy = new GroundEnemy(new Vector2(1280, 240), 1.5f, 250, -1);
-            //enemy.sprite.texture = ground;
-            //enemyManager.AddEnemy(enemy);
+            enemy.sprite.texture = ground;
+            enemyManager.AddEnemy(enemy);
             
-            //enemy = new AirEnemy(new Vector2(1960, 0), 2.0f, 250, 1);
-            //enemy.sprite.texture = air;
-            //enemyManager.AddEnemy(enemy);
+            enemy = new AirEnemy(new Vector2(1960, 0), 2.0f, 250, 1);
+            enemy.sprite.texture = air;
+            enemyManager.AddEnemy(enemy);
 
-            //enemy = new GroundEnemy(new Vector2(2990, 400), 1.5f, 350, 1);
-            //enemy.sprite.texture = ground;
-            //enemyManager.AddEnemy(enemy);
+            enemy = new GroundEnemy(new Vector2(2990, 400), 1.5f, 350, 1);
+            enemy.sprite.texture = ground;
+            enemyManager.AddEnemy(enemy);
 
-            //enemy = new GroundEnemy(new Vector2(2990, 400), 2.5f, 350, -1);
-            //enemy.sprite.texture = ground;
-            //enemyManager.AddEnemy(enemy);
+            enemy = new GroundEnemy(new Vector2(2990, 400), 2.5f, 350, -1);
+            enemy.sprite.texture = ground;
+            enemyManager.AddEnemy(enemy);
 
             enemy = new AirEnemy(new Vector2(4450, 240), 2.0f, 425, 1);
             enemy.sprite.texture = air;
@@ -458,7 +464,11 @@ namespace Gloorp
             base.Update(gameTime);
            
             
+            //check if player is at end of level
+            if(scientist.currState == BossState.Static && finishLine.position.X < 1000)
+            {
 
+            }
            
             // checked for collision
             // check if in range of object; if true, display UI in DirectionSpriteManager
@@ -613,6 +623,7 @@ namespace Gloorp
                     finishLine.position.X += playerSpeed;
                     badGuy.Position = new Vector2(badGuy.Position.X + 5, badGuy.Position.Y);
                     cage.position.X += playerSpeed;
+                    scientist.PlayerMoved(playerSpeed);
                 }
             }
             else if (state.IsKeyDown(Keys.D))//move right
@@ -639,6 +650,7 @@ namespace Gloorp
                     finishLine.position.X -= playerSpeed;
                     badGuy.Position = new Vector2(badGuy.Position.X - playerSpeed, badGuy.Position.Y);
                     cage.position.X -= playerSpeed;
+                    scientist.PlayerMoved(-playerSpeed);
                 }
             }
 
@@ -694,14 +706,17 @@ namespace Gloorp
             mBackgroundFour.Draw(spriteBatch);
             mBackgroundFive.Draw(spriteBatch);
             enemyManager.Draw(spriteBatch);
+
+            scientist.Draw(spriteBatch);
+            //spriteBatch.Draw(scientist.sprite.texture, scientist.sprite.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.42f, SpriteEffects.None, 0.0f);
             platformManager.Draw(spriteBatch);
 
-            
+
             //draw badguy
             //badGuy.Draw(spriteBatch);
 
             objectManager.Draw(spriteBatch);
-            spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
+            //spriteBatch.Draw(finishLine.texture, finishLine.position, Color.White);
 
             //draw "blob"
             Vector2 origin = new Vector2(frameWidth / 2.0f, frameHeight);
@@ -800,6 +815,8 @@ namespace Gloorp
             outPut = blank;//change the font back to not show anything
             //finish line
             finishLine.position.X += offset;
+
+            scientist.Reset(offset);
         }
     }
 }

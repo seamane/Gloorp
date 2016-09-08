@@ -73,6 +73,7 @@
     <Compile Include="DirectionTarget.cs" />
     <Compile Include="Enemy\Enemy.cs" />
     <Compile Include="Enemy\EnemyManager.cs" />
+    <Compile Include="Enemy\Scientist.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Enemy\GroundEnemy.cs" />
     <Compile Include="ObjectManager.cs" />
