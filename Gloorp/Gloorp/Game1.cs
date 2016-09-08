@@ -80,7 +80,7 @@ namespace Gloorp
         ObjectManager objectManager = new ObjectManager();
         EnemyManager enemyManager;
 
-        const float playerSpeed = 3;
+        const float playerSpeed = 8;
 
         // contains all the directions
         DirectionSpriteManager directionManager = new DirectionSpriteManager();
@@ -567,8 +567,8 @@ namespace Gloorp
             if (scientist.CanSeePlayer(player) || enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > graphics.PreferredBackBufferHeight + 100)
             {
                 //then game over
-                player.mCurrentState = State.Found;
-                currState = GameState.Dead;
+                //player.mCurrentState = State.Found;
+                //currState = GameState.Dead;
             }
             
             prevKeyboardState = currKeyboardState;
@@ -757,6 +757,7 @@ namespace Gloorp
 
             if (player.nearObject!=null)
             {
+                if(scientist.appeared)
                 directionManager.Draw(spriteBatch,player.nearObject);     
             }
 

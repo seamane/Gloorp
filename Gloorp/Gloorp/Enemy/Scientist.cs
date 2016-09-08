@@ -26,6 +26,7 @@ namespace Gloorp
         public bool playerWins = false;
         public int playerSequenceCount = 0;
         private float speed = 1;
+        public bool appeared=true;
 
         public BossState currState = BossState.Static;
         
@@ -41,8 +42,13 @@ namespace Gloorp
             {
                 if(currState == BossState.Start)
                 {
+                    
                     if(sprite.position.Y > 0)
                     {
+                        if (sprite.position.Y < 120)
+                            appeared = true;
+                        else
+                            appeared = false;
                         sprite.position.Y -= speed;
                     }
                     else
@@ -61,6 +67,7 @@ namespace Gloorp
                 {
                     if(sprite.position.Y < 550)
                     {
+                       
                         sprite.position.Y += speed;
                     }
                 }
