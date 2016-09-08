@@ -562,6 +562,7 @@ namespace Gloorp
                 pineAppleAnim.CurrentFrame = 0;//reset the frames on the objects animation.
             }
 
+
             // check if enemy can see player
             if (scientist.CanSeePlayer(player) || enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > graphics.PreferredBackBufferHeight + 100)
             {
