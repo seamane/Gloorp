@@ -29,7 +29,7 @@ namespace Gloorp
         {           
             Vector2 pos = new Vector2(nearObject.position.X+((nearObject.texture.Width/2)-32), nearObject.position.Y- 60);
             position = pos;
-            Debug.WriteLine(position+" in draw");
+            //Debug.WriteLine(position+" in draw");
             switch (currState)
             {
                 case TargetState.Failure:

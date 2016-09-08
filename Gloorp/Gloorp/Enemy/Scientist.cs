@@ -18,7 +18,7 @@ namespace Gloorp
 
         public Sprite sprite;
         public Texture2D vision;
-        private Vector2 visionOffset = new Vector2(78, 153);
+        private Vector2 visionOffset = new Vector2(70, 139);
         private Vector2 eye;
         private Vector2 lookAt = new Vector2(0, 1);
         private float viewRadius = (float)Math.PI / 20.0f;
@@ -63,10 +63,6 @@ namespace Gloorp
                     {
                         sprite.position.Y += speed;
                     }
-                    else
-                    {
-                        currState = BossState.Static;
-                    }
                 }
             }
         }
@@ -92,7 +88,7 @@ namespace Gloorp
             sprite.position.X += offset;
             currState = BossState.Static;
             playerAtCheckpoint = false;
-
+            playerSequenceCount = 0;
         }
 
         public virtual void Draw(SpriteBatch batch)
@@ -100,7 +96,6 @@ namespace Gloorp
             batch.Draw(sprite.texture, sprite.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.38f, SpriteEffects.None, 0.0f);
             if(currState == BossState.Scan)
             {
-                //offset from scientest is //78,153
                 batch.Draw(vision, sprite.position + visionOffset, null, Color.White, 0.0f, new Vector2(0, 0), 0.38f, SpriteEffects.None, 0.0f);
             }
         }

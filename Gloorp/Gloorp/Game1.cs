@@ -38,12 +38,14 @@ namespace Gloorp
         //player UI for start of game
         Sprite keyA = new Sprite();
         Sprite keyD = new Sprite();
+        Sprite spacebar = new Sprite();
         Sprite leftArrow = new Sprite();
         Sprite rightArrow = new Sprite();
         Sprite whiteTriggerd = new Sprite();
 
         //scientist
-        Scientist scientist = new Scientist(new Vector2(5400, 550));
+        Scientist scientist = new Scientist(new Vector2(5225, 550));
+        Vector2 bossCheckpoint;
 
         //broken cage
         Sprite cage = new Sprite();
@@ -78,7 +80,7 @@ namespace Gloorp
         ObjectManager objectManager = new ObjectManager();
         EnemyManager enemyManager;
 
-        const float playerSpeed = 10;
+        const float playerSpeed = 3;
 
         // contains all the directions
         DirectionSpriteManager directionManager = new DirectionSpriteManager();
@@ -170,7 +172,7 @@ namespace Gloorp
             LoadPlatforms();
 
             scientist.sprite.texture = Content.Load<Texture2D>("Images/Enemies/scientist");
-            scientist.vision = Content.Load<Texture2D>("Images/Enemies/vision");
+            scientist.vision = Content.Load<Texture2D>("Images/Enemies/vision2");
 
             //init destination target
             directionManager.directionTarget.neutralTexture = Content.Load<Texture2D>("DirectionSprites/iconWhite");
@@ -189,6 +191,8 @@ namespace Gloorp
             keyA.position = new Vector2(370,190);
             keyD.texture = Content.Load<Texture2D>("DirectionSprites/D_Icon");
             keyD.position = new Vector2(450, 190);
+            spacebar.texture = Content.Load<Texture2D>("DirectionSprites/Spacebar2");
+            spacebar.position = new Vector2(955, 190);
             leftArrow.texture = Content.Load<Texture2D>("DirectionSprites/left arrow");
             leftArrow.position = new Vector2(375, 350);
             rightArrow.texture = Content.Load<Texture2D>("DirectionSprites/right arrow");
@@ -249,9 +253,22 @@ namespace Gloorp
             platform = new Platform(new Vector2(xPos, 378), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
             platformManager.AddPlatform(platform);
             xPos += platform.sprite.texture.Width + gapSize;
-            platform = new Platform(new Vector2(xPos, 458), Content.Load<Texture2D>("Images/BackgroundArt/xLargePlatform"));
+            platform = new Platform(new Vector2(xPos, 458), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+
+            bossCheckpoint = platform.sprite.position;
+
             platformManager.AddPlatform(platform);
-            xPos += platform.sprite.texture.Width + gapSize;
+            platform = new Platform(new Vector2(xPos, 490), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            platform = new Platform(new Vector2(xPos, 522), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            xPos += platform.sprite.texture.Width;
+            platform = new Platform(new Vector2(xPos, 458), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            platform = new Platform(new Vector2(xPos, 490), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
+            platform = new Platform(new Vector2(xPos, 522), Content.Load<Texture2D>("Images/BackgroundArt/smallPlatform"));
+            platformManager.AddPlatform(platform);
         }
 
         private void LoadObjects()
@@ -310,7 +327,7 @@ namespace Gloorp
             objectManager.AddObject(hideObject);
 
             hideObject = new Sprite();
-            hideObject.position = new Vector2(5650, 370);
+            hideObject.position = new Vector2(5400, 322);
             hideObject.texture = pineapple;
             objectManager.AddObject(hideObject);
         }
@@ -470,7 +487,7 @@ namespace Gloorp
            
             
             //check if player is at end of level
-            if(scientist.currState == BossState.Static && finishLine.position.X < 1500)
+            if(scientist.currState == BossState.Static && scientist.sprite.position.X < player.sprite.position.X)
             {
                 scientist.currState = BossState.Start;
                 scientist.playerAtCheckpoint = true;
@@ -546,11 +563,11 @@ namespace Gloorp
             }
 
             // check if enemy can see player
-            if (enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > graphics.PreferredBackBufferHeight + 100)
+            if (scientist.CanSeePlayer(player) || enemyManager.CanEnemySeePlayer() || player.sprite.position.Y > graphics.PreferredBackBufferHeight + 100)
             {
                 //then game over
-                //player.mCurrentState = State.Found;
-                //currState = GameState.Dead;
+                player.mCurrentState = State.Found;
+                currState = GameState.Dead;
             }
             
             prevKeyboardState = currKeyboardState;
@@ -624,6 +641,7 @@ namespace Gloorp
                     platformManager.PlayerMoved(playerSpeed);
                     keyA.position.X += playerSpeed;
                     keyD.position.X += playerSpeed;
+                    spacebar.position.X += playerSpeed;
                     leftArrow.position.X += playerSpeed;
                     rightArrow.position.X += playerSpeed;
                     finishLine.position.X += playerSpeed;
@@ -651,6 +669,7 @@ namespace Gloorp
                     objectManager.PlayerMoved(-playerSpeed);
                     keyA.position.X -= playerSpeed;
                     keyD.position.X -= playerSpeed;
+                    spacebar.position.X -= playerSpeed;
                     leftArrow.position.X -= playerSpeed;
                     rightArrow.position.X -= playerSpeed;
                     finishLine.position.X -= playerSpeed;
@@ -740,10 +759,11 @@ namespace Gloorp
 
             spriteBatch.Draw(keyA.texture, keyA.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
             spriteBatch.Draw(keyD.texture, keyD.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(spacebar.texture, spacebar.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.05f, SpriteEffects.None, 0.0f);
             //spriteBatch.Draw(leftArrow.texture, leftArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
             //spriteBatch.Draw(rightArrow.texture, rightArrow.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.15f, SpriteEffects.None, 0.0f);
 
-            if(currState == GameState.Dead || currState == GameState.Finished)
+            if (currState == GameState.Dead || currState == GameState.Finished)
             {
                 //spriteBatch.Draw(replay.texture, replay.position, null, Color.White, 0.0f, new Vector2(0, 0), 0.2f, SpriteEffects.None, 0.0f);
                 outPut = replayText;//change the text so it asks for replay
@@ -775,6 +795,10 @@ namespace Gloorp
                 directionManager.directionTarget.currState = TargetState.Success;               
                 directionManager.Reset(false);
                 directionManager.IncrementSpeed();
+                if(scientist.currState == BossState.Scan)
+                {
+                    ++scientist.playerSequenceCount;
+                }
             }
             else if(directionManager.collisionState == CollisionState.Late)
             {
@@ -816,6 +840,7 @@ namespace Gloorp
             //load player UI for start of game
             keyA.position.X += offset;
             keyD.position.X += offset;
+            spacebar.position.X += offset;
             leftArrow.position.X += offset;
             rightArrow.position.X += offset;
             cage.position.X += offset;
